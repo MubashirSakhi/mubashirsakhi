@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #23286b;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  h1, h2 {
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: 60px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 2.4em;
+    margin-top: 0;
+    margin-bottom: 32px;
+  }
+
+  h4 {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+@layer components {
+  .feature-heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.4em;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-top: 0;
+    margin-bottom: 32px;
+  }
+
+  .primary-button {
+    display: inline-block;
+    padding: 16px 37px;
+    background-color: #f1b503;
+    color: #23286b;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 200ms ease;
+  }
+
+  .primary-button:hover {
+    background-color: #d59f00;
+  }
+}
