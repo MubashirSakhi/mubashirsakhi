@@ -28,76 +28,90 @@ export default function Community() {
   }, [isInView])
 
   return (
-    <section className="px-8 py-32" style={{ borderTop: '1px solid #1a1a1a' }}>
+    <section className="px-8 md:px-12 py-20" style={{ borderTop: '1px solid #1a1a1a' }}>
       <div className="max-w-[1100px] mx-auto">
-        <span className="section-label">Community</span>
 
-        <div className="grid md:grid-cols-2 gap-24">
-
-          {/* Community number */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+        {/* Enormous number */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+        >
+          <div
+            ref={countRef}
+            style={{
+              fontSize: 'clamp(5rem, 18vw, 16rem)',
+              fontFamily: 'Times New Roman, serif',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
+              lineHeight: 0.85,
+              color: '#f1b503',
+            }}
           >
-            <div
-              ref={countRef}
+            {count.toLocaleString()}+
+          </div>
+        </motion.div>
+
+        {/* Bottom row — label + certs */}
+        <motion.div
+          className="flex justify-between items-end flex-wrap gap-8 mt-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+        >
+          <div>
+            <p
               style={{
-                fontSize: 'clamp(4rem, 9vw, 7rem)',
-                fontFamily: 'Times New Roman, serif',
-                fontWeight: 700,
-                color: '#f1b503',
-                lineHeight: 1,
-                letterSpacing: '-0.03em',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#444444',
+                marginBottom: '12px',
               }}
             >
-              {count.toLocaleString()}+
-            </div>
-            <p className="mt-4 text-[1rem]" style={{ color: '#f0f0f0' }}>
-              Members in Tech Geeks of Pakistan
+              Members / Tech Geeks of Pakistan
             </p>
-            <p className="text-[0.875rem] mt-1" style={{ color: '#555555' }}>
+            <p style={{ fontSize: '0.875rem', color: '#555555', marginBottom: '12px' }}>
               Facebook community for Pakistani tech professionals
             </p>
             <a
               href="https://www.facebook.com/groups/tgpak"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-5 text-[13px] font-medium hover:text-gold transition-colors duration-200"
-              style={{ color: '#f0f0f0' }}
+              className="hover:text-gold transition-colors duration-200"
+              style={{ fontSize: '13px', color: '#f0f0f0' }}
             >
               Visit community →
             </a>
-          </motion.div>
+          </div>
 
-          {/* Certifications */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-          >
-            <p className="text-[11px] font-bold tracking-[0.12em] uppercase mb-6" style={{ color: '#444444' }}>
+          <div style={{ maxWidth: '300px' }}>
+            <p
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#444444',
+                marginBottom: '16px',
+              }}
+            >
               Certifications
             </p>
-            <div className="flex flex-col gap-0">
-              {certs.map((cert) => (
-                <div
-                  key={cert}
-                  className="py-4 text-[0.95rem]"
-                  style={{
-                    borderBottom: '1px solid #1a1a1a',
-                    color: '#888888',
-                  }}
-                >
-                  {cert}
-                </div>
-              ))}
-            </div>
-          </motion.div>
+            {certs.map((cert) => (
+              <div
+                key={cert}
+                className="py-3 text-[0.875rem]"
+                style={{ borderBottom: '1px solid #1a1a1a', color: '#888888' }}
+              >
+                {cert}
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
-        </div>
       </div>
     </section>
   )

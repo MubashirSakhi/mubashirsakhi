@@ -1,6 +1,7 @@
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Marquee from './components/Marquee'
 import WhatIDo from './components/WhatIDo'
 import TrackRecord from './components/TrackRecord'
 import Community from './components/Community'
@@ -13,6 +14,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <Marquee />
         <WhatIDo />
         <TrackRecord />
         <Community />
