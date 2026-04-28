@@ -1,9 +1,10 @@
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import FeatureSections from './components/FeatureSections'
-import CertificationsSlider from './components/CertificationsSlider'
-import Footer from './components/Footer'
+import WhatIDo from './components/WhatIDo'
+import TrackRecord from './components/TrackRecord'
+import Community from './components/Community'
+import ContactFooter from './components/ContactFooter'
 
 export default function App() {
   return (
@@ -12,10 +13,11 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <FeatureSections />
-        <CertificationsSlider />
+        <WhatIDo />
+        <TrackRecord />
+        <Community />
       </main>
-      <Footer />
+      <ContactFooter />
     </>
   )
 }

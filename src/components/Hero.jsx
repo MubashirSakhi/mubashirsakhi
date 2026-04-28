@@ -1,102 +1,130 @@
 import { motion } from 'framer-motion'
+import photo from '../assets/mubashir.png'
 
-const HERO_IMG = 'https://uploads-ssl.webflow.com/5fa91a944517518f02a3aeb1/602ff5261a3a39f325b92021_Screen%20Shot%202021-02-19%20at%2010.27.28%20PM.png'
+const easeOut = [0.22, 1, 0.36, 1]
 
-const chips = [
-  { label: '12K+ Community', top: '8%',  right: '-8%', rotate: '5deg',  delay: 0 },
-  { label: '$10K Raised',    bottom: '12%', right: '-6%', rotate: '-3deg', delay: 0.4 },
-  { label: '3 Ventures',     top: '42%',  left: '-10%', rotate: '3deg',  delay: 0.8 },
-]
+const LinkedInIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+    <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+  </svg>
+)
 
-const stagger = (i) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay: i * 0.12, ease: 'easeOut' },
-})
+const GitHubIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  </svg>
+)
 
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-screen flex items-center pt-20 pb-12"
-      style={{ background: 'linear-gradient(135deg, #0d1130 0%, #23286b 100%)' }}
+    <div
+      className="relative flex h-screen w-full flex-col items-center justify-between overflow-hidden px-8 pt-20 pb-8 md:px-12"
+      style={{ backgroundColor: '#080808' }}
     >
-      <div className="max-w-[940px] mx-auto px-6 w-full">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
 
-          {/* Left — text */}
-          <div className="flex flex-col items-start">
-            <motion.span
-              {...stagger(0)}
-              className="mb-5 px-3 py-1 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase"
-              style={{ backgroundColor: 'rgba(241,181,3,0.15)', color: '#f1b503', border: '1px solid rgba(241,181,3,0.3)' }}
-            >
-              Based in Karachi, Pakistan
-            </motion.span>
+      {/* Main Content */}
+      <div className="relative grid w-full max-w-[1100px] flex-grow grid-cols-1 items-center md:grid-cols-3">
 
-            <motion.h1
-              {...stagger(1)}
-              className="text-white mb-5"
-              style={{ fontSize: 'clamp(2.4rem, 5vw, 3.6rem)', fontFamily: 'Times New Roman, serif', lineHeight: 1.05, letterSpacing: '-0.03em' }}
-            >
-              I build, operate,<br />and ship.
-            </motion.h1>
-
-            <motion.p
-              {...stagger(2)}
-              className="mb-8 text-[1rem] leading-relaxed"
-              style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '420px' }}
-            >
-              Multi-track founder across live event production (Streamguys), wholesale renewable energy, and JavaScript development. I help startups launch fast without needing a tech team.
-            </motion.p>
-
-            <motion.a
-              {...stagger(3)}
-              href="#contact"
-              className="primary-button"
-            >
-              Lets Connect
-            </motion.a>
-          </div>
-
-          {/* Right — photo + chips */}
-          <motion.div
-            className="relative hidden md:block"
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+        {/* Left — intro text */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1, ease: easeOut }}
+          className="z-20 order-2 md:order-1 text-center md:text-left"
+        >
+          <span className="section-label">Mubashir Sakhi</span>
+          <p className="mx-auto max-w-[220px] text-[0.875rem] leading-relaxed md:mx-0" style={{ color: '#888888' }}>
+            Founder across live events, renewable energy, and technology.
+          </p>
+          <a
+            href="mailto:mubashirsakhi@gmail.com"
+            className="mt-4 inline-block text-[0.875rem] font-medium transition-colors duration-200 hover:text-gold"
+            style={{ color: '#f0f0f0' }}
           >
-            <img
-              src={HERO_IMG}
-              alt="Mubashir Sakhi"
-              className="w-full rounded-lg"
-              style={{ filter: 'brightness(0.95)' }}
-            />
+            Get in touch →
+          </a>
+        </motion.div>
 
-            {chips.map((chip) => (
-              <motion.div
-                key={chip.label}
-                className="absolute"
-                style={{ top: chip.top, bottom: chip.bottom, right: chip.right, left: chip.left, rotate: chip.rotate }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
-                transition={{
-                  opacity: { delay: 0.6 + chip.delay, duration: 0.4 },
-                  scale:   { delay: 0.6 + chip.delay, duration: 0.4 },
-                  y: { delay: 0.6 + chip.delay, duration: 3, repeat: Infinity, ease: 'easeInOut' },
-                }}
-              >
-                <span
-                  className="whitespace-nowrap text-[12px] font-bold px-3 py-2 rounded-full"
-                  style={{ backgroundColor: '#fff', color: '#23286b', boxShadow: '0 4px 16px rgba(0,0,0,0.18)' }}
-                >
-                  {chip.label}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-
+        {/* Center — photo + gold circle */}
+        <div className="relative order-1 md:order-2 flex justify-center items-center h-full min-h-[360px]">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: easeOut, delay: 0.2 }}
+            className="absolute z-0 h-[280px] w-[280px] rounded-full md:h-[360px] md:w-[360px] lg:h-[440px] lg:w-[440px]"
+            style={{ backgroundColor: '#f1b503' }}
+          />
+          <motion.img
+            src={photo}
+            alt="Mubashir Sakhi"
+            className="relative z-10 w-52 md:w-60 lg:w-72 scale-150 object-cover object-top"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: easeOut, delay: 0.4 }}
+          />
         </div>
+
+        {/* Right — large serif text */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2, ease: easeOut }}
+          className="z-20 order-3 flex items-center justify-center text-center md:justify-start"
+        >
+          <h1
+            style={{
+              fontFamily: 'Times New Roman, serif',
+              fontWeight: 800,
+              letterSpacing: '-0.03em',
+              lineHeight: 0.9,
+              fontSize: 'clamp(4rem, 9vw, 7.5rem)',
+              color: '#f0f0f0',
+            }}
+          >
+            BUILD.
+            <br />
+            <span style={{ color: '#f1b503' }}>GROW.</span>
+          </h1>
+        </motion.div>
+
       </div>
-    </section>
+
+      {/* Footer — social + location */}
+      <footer className="z-30 flex w-full max-w-[1100px] items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.4, ease: easeOut }}
+          className="flex items-center gap-5"
+        >
+          {[
+            { href: 'https://linkedin.com/in/mubashirsakhi', Icon: LinkedInIcon },
+            { href: 'https://github.com/mubashirsakhi',     Icon: GitHubIcon },
+          ].map(({ href, Icon }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-200 hover:text-[#f0f0f0]"
+              style={{ color: '#555555' }}
+            >
+              <Icon />
+            </a>
+          ))}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.5, ease: easeOut }}
+          className="text-[13px] font-medium"
+          style={{ color: '#555555' }}
+        >
+          Karachi, Pakistan
+        </motion.div>
+      </footer>
+
+    </div>
   )
 }
