@@ -1,31 +1,69 @@
-const items = [
+const topItems = [
   '12,000+ Community Members',
   '$10K Raised',
   '5,000+ Vehicles Wrapped',
   '3 Active Ventures',
-  'Based in Karachi, Pakistan',
+  'WOW Festival',
+  '021Disrupt',
+  'No fluff. Just things shipped.',
+]
+
+const bottomItems = [
+  'Live Events',
+  'Renewable Energy',
+  'JavaScript / Node.js',
+  'No-Code Tooling',
+  'Streamguys',
+  'Enova',
+  'Tech Geeks of Pakistan',
 ]
 
 export default function Marquee() {
   return (
     <div
       className="overflow-hidden"
-      style={{ borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a', padding: '14px 0' }}
+      style={{ borderTop: '2px solid #CBD5E1', borderBottom: '2px solid #CBD5E1' }}
     >
-      <div className="flex whitespace-nowrap marquee-track">
-        {[...items, ...items].map((item, i) => (
+      {/* Top track — left to right */}
+      <div
+        className="flex whitespace-nowrap marquee-track"
+        style={{ padding: '11px 0', borderBottom: '1px solid #E2E8F0' }}
+      >
+        {[...topItems, ...topItems].map((item, i) => (
           <span
             key={i}
             style={{
-              padding: '0 3rem',
-              fontSize: '11px',
-              letterSpacing: '0.12em',
+              padding: '0 2.8rem',
+              fontSize: '12px',
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: '#f1b503',
+              color: '#84CC16',
             }}
           >
-            {item}{' '}
-            <span style={{ color: '#2a2a2a' }}>·</span>
+            {item}
+            <span style={{ color: '#CBD5E1', marginLeft: '2.8rem' }}>·</span>
+          </span>
+        ))}
+      </div>
+
+      {/* Bottom track — right to left */}
+      <div
+        className="flex whitespace-nowrap marquee-track-reverse"
+        style={{ padding: '11px 0' }}
+      >
+        {[...bottomItems, ...bottomItems].map((item, i) => (
+          <span
+            key={i}
+            style={{
+              padding: '0 2.8rem',
+              fontSize: '12px',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#94A3B8',
+            }}
+          >
+            {item}
+            <span style={{ color: '#E2E8F0', marginLeft: '2.8rem' }}>·</span>
           </span>
         ))}
       </div>

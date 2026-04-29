@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import photo from '../assets/mubashir.png'
 
 const ease = [0.33, 1, 0.68, 1]
 
@@ -18,41 +17,31 @@ const GitHubIcon = () => (
 
 const nameStyle = {
   fontSize: 'clamp(3.5rem, 10vw, 9rem)',
-  fontFamily: 'Times New Roman, serif',
+  fontFamily: 'Archivo, sans-serif',
   fontWeight: 700,
   letterSpacing: '-0.04em',
   lineHeight: 0.88,
-  color: '#f0f0f0',
+  color: '#0F172A',
 }
+
+const stats = [
+  { num: '12K+', label: 'Community' },
+  { num: '$10K', label: 'Raised'    },
+  { num: '5K+',  label: 'Vehicles'  },
+  { num: '3',    label: 'Ventures'  },
+]
 
 export default function Hero() {
   return (
     <section
       className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: '#080808' }}
+      style={{ backgroundColor: '#FFFEF9' }}
     >
-      {/* Photo — bleeds to right viewport edge */}
-      <motion.div
-        className="absolute right-0 top-0 bottom-0 w-[42vw] hidden md:block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
-      >
-        <img
-          src={photo}
-          alt="Mubashir Sakhi"
-          className="w-full h-full object-cover object-top grayscale"
-        />
-        <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-[#080808] to-transparent" />
-      </motion.div>
 
-      {/* Left content */}
-      <div className="relative z-10 flex flex-col min-h-screen px-8 md:px-12 pt-24 pb-8">
-
-        {/* Name block — grows to center vertically */}
+<div className="relative z-10 flex flex-col min-h-screen px-8 md:px-12 pt-24 pb-8">
         <div className="flex-grow flex flex-col justify-center">
 
-          {/* MUBASHIR — slides from left */}
+          {/* MUBASHIR */}
           <div className="overflow-hidden">
             <motion.div
               style={nameStyle}
@@ -64,16 +53,16 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Full-bleed rule */}
+          {/* Pink rule — 2px, full bleed */}
           <motion.div
             className="-mx-8 md:-mx-12 origin-left my-4"
-            style={{ height: '1px', backgroundColor: '#2a2a2a' }}
+            style={{ height: '2px', backgroundColor: '#84CC16' }}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.7, delay: 0.8, ease }}
           />
 
-          {/* SAKHI — slides from right */}
+          {/* SAKHI */}
           <div className="overflow-hidden">
             <motion.div
               style={{ ...nameStyle, textAlign: 'right' }}
@@ -85,19 +74,78 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Track labels */}
+          {/* Tagline */}
           <motion.div
-            className="flex flex-wrap gap-6 mt-10"
+            className="mt-10"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#444444' }}
+            transition={{ duration: 0.6, delay: 1.0 }}
           >
-            {[['01', 'Live Events'], ['02', 'Energy'], ['03', 'Technology']].map(([num, label]) => (
-              <span key={num}>
-                <span style={{ color: '#f1b503' }}>{num}</span>
-                {' — '}{label}
-              </span>
+            <p style={{ fontFamily: 'Caveat, cursive', fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', color: '#0F172A', fontWeight: 600, letterSpacing: '0.01em', marginBottom: '8px' }}>
+              Operator. Builder. In the trenches.
+            </p>
+            <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '480px', lineHeight: 1.6 }}>
+              I build systems that move — live events, energy supply chains, and tech that actually gets used.
+            </p>
+          </motion.div>
+
+          {/* Brutalist stat grid */}
+          <motion.div
+            className="flex flex-wrap mt-10"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.15 }}
+          >
+            {stats.map(({ num, label }) => (
+              <div
+                key={label}
+                style={{
+                  border: '2px solid #CBD5E1',
+                  padding: '16px 28px',
+                  marginRight: '-2px',
+                  marginBottom: '-2px',
+                }}
+              >
+                <div style={{
+                  fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
+                  fontFamily: 'Archivo, sans-serif',
+                  fontWeight: 700,
+                  color: '#84CC16',
+                  lineHeight: 1,
+                }}>
+                  {num}
+                </div>
+                <div style={{
+                  fontSize: '10px',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#64748B',
+                  marginTop: '6px',
+                }}>
+                  {label}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Right now */}
+          <motion.div
+            className="mt-10"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.28 }}
+          >
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#64748B', marginBottom: '10px' }}>
+              Right now
+            </p>
+            {[
+              'Running real-time event production across Pakistan',
+              'Scaling Enova — sourcing, funnels, distribution',
+              'Helping startups ship faster',
+            ].map((line) => (
+              <p key={line} style={{ fontSize: '0.8rem', color: '#64748B', lineHeight: 1.8 }}>
+                <span style={{ color: '#84CC16', marginRight: '8px' }}>→</span>{line}
+              </p>
             ))}
           </motion.div>
 
@@ -105,13 +153,13 @@ export default function Hero() {
 
         {/* Bottom bar */}
         <motion.div
-          className="flex items-center justify-between"
+          className="flex items-center justify-between flex-wrap gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.4 }}
+          transition={{ duration: 0.6, delay: 1.45 }}
         >
-          <span style={{ fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#555555' }}>
-            Karachi, Pakistan
+          <span style={{ fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748B' }}>
+            Karachi — Always building
           </span>
           <div className="flex items-center gap-5">
             {[
@@ -123,19 +171,29 @@ export default function Hero() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors duration-200 hover:text-[#f0f0f0]"
-                style={{ color: '#555555' }}
+                className="transition-colors duration-200"
+                style={{ color: '#64748B' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
+                onMouseLeave={e => e.currentTarget.style.color = '#64748B'}
               >
                 <Icon />
               </a>
             ))}
-            <a
+            <motion.a
               href="mailto:mubashirsakhi@gmail.com"
-              className="transition-colors duration-200 hover:text-[#f0f0f0]"
-              style={{ fontSize: '13px', color: '#555555' }}
+              className="cursor-pointer"
+              style={{
+                fontSize: '13px',
+                color: '#0F172A',
+                border: '1px solid #CBD5E1',
+                padding: '8px 16px',
+                display: 'inline-block',
+              }}
+              whileHover={{ backgroundColor: '#84CC16', color: '#FFFEF9', borderColor: '#84CC16' }}
+              transition={{ duration: 0.15 }}
             >
               Get in touch →
-            </a>
+            </motion.a>
           </div>
         </motion.div>
 

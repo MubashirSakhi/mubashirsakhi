@@ -5,6 +5,8 @@ import Marquee from './components/Marquee'
 import WhatIDo from './components/WhatIDo'
 import TrackRecord from './components/TrackRecord'
 import Community from './components/Community'
+import Listening from './components/Listening'
+import Medium from './components/Medium'
 import ContactFooter from './components/ContactFooter'
 
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
         <WhatIDo />
         <TrackRecord />
         <Community />
+        <Listening />
+        <Medium />
       </main>
       <ContactFooter />
     </>

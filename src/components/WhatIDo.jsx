@@ -3,20 +3,20 @@ import { motion } from 'framer-motion'
 const tracks = [
   {
     num: '01',
-    title: 'Live Event Production',
-    body: "Streamguys (2020–present) — end-to-end live streaming and real-time social content for Pakistan's flagship events including 021Disrupt and WOW Festival by British Council.",
+    title: 'Live Events — Streamguys',
+    body: "Most people don't attend your event. They watch it. We built Streamguys around that shift. We don't just livestream — we run the full attention engine: capture, edit, publish, and distribute in real-time while your event is still happening. By the time the session ends, your content is already out.",
     link: { label: 'streamguys.pk', href: 'http://www.streamguys.pk' },
   },
   {
     num: '02',
-    title: 'Renewable Energy',
-    body: 'Wholesale sourcing and trading of renewable energy capacity to industrial and commercial buyers. Operating at the intersection of technical and commercial expertise.',
+    title: 'Energy — Enova',
+    body: "Pakistan's energy market is unstable. That's exactly why it's interesting. With Enova I'm building on the supply side — sourcing from China, building supplier relationships, supplying retailers and installers, creating demand through digital funnels. Margin, logistics, and timing. Most people don't see that layer. I operate in it.",
     link: null,
   },
   {
     num: '03',
-    title: 'Technology',
-    body: 'JavaScript and Node.js development — REST APIs, testing automation, cloud deployment. No-code consulting to help startups validate ideas fast. Open source on GitHub.',
+    title: 'Technology — Execution Layer',
+    body: "I don't build tech for the sake of it. I use it to remove bottlenecks — APIs, automation, internal tools. No-code where it works, custom systems where it matters. For early-stage teams: what to build, what to skip, how to move faster this week.",
     link: { label: 'github.com/mubashirsakhi', href: 'http://github.com/mubashirsakhi' },
   },
 ]
@@ -25,19 +25,40 @@ const ease = [0.33, 1, 0.68, 1]
 
 export default function WhatIDo() {
   return (
-    <section className="px-8 md:px-12 py-20" style={{ borderTop: '1px solid #1a1a1a' }}>
-      <div className="max-w-[1100px] mx-auto">
-        {tracks.map((track, i) => (
-          <motion.div
-            key={track.num}
-            className="py-14"
-            style={{ borderBottom: '1px solid #1a1a1a' }}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
+    <section style={{ borderTop: '1px solid #E2E8F0' }}>
+      {tracks.map((track, i) => (
+        <motion.div
+          key={track.num}
+          className="relative overflow-hidden px-8 md:px-12 py-14"
+          style={{ borderBottom: '1px solid #E2E8F0' }}
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
+          whileHover={{ backgroundColor: '#F5FAF0' }}
+        >
+          {/* Ghost number — decorative watermark */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              right: '-0.02em',
+              top: '-0.1em',
+              fontSize: 'clamp(8rem, 20vw, 18rem)',
+              fontFamily: 'Archivo, sans-serif',
+              fontWeight: 700,
+              color: '#EDF7DC',
+              lineHeight: 1,
+              pointerEvents: 'none',
+              userSelect: 'none',
+            }}
           >
-            {/* Tiny number */}
+            {track.num}
+          </div>
+
+          <div className="max-w-[1100px] mx-auto relative">
+
+            {/* Index label */}
             <span
               style={{
                 display: 'block',
@@ -45,22 +66,22 @@ export default function WhatIDo() {
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#f1b503',
+                color: '#84CC16',
                 marginBottom: '12px',
               }}
             >
               {track.num}
             </span>
 
-            {/* Giant title */}
+            {/* Title */}
             <h2
               style={{
                 fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                fontFamily: 'Times New Roman, serif',
+                fontFamily: 'Archivo, sans-serif',
                 fontWeight: 700,
                 letterSpacing: '-0.03em',
                 lineHeight: 1,
-                color: '#f0f0f0',
+                color: '#0F172A',
                 marginBottom: '20px',
               }}
             >
@@ -70,18 +91,18 @@ export default function WhatIDo() {
             {/* Animated rule */}
             <motion.div
               className="-mx-8 md:-mx-12 origin-left"
-              style={{ height: '1px', backgroundColor: '#1a1a1a', marginBottom: '20px' }}
+              style={{ height: '1px', backgroundColor: '#E2E8F0', marginBottom: '20px' }}
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.7, ease }}
             />
 
-            {/* Body + link — indented on desktop */}
+            {/* Body + link */}
             <div className="md:pl-[clamp(2rem,5vw,4rem)]">
               <p
                 className="leading-relaxed mb-4"
-                style={{ fontSize: '0.875rem', color: '#888888', maxWidth: '560px' }}
+                style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '560px' }}
               >
                 {track.body}
               </p>
@@ -90,16 +111,19 @@ export default function WhatIDo() {
                   href={track.link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-gold transition-colors duration-200"
-                  style={{ fontSize: '13px', color: '#f0f0f0' }}
+                  className="transition-colors duration-200"
+                  style={{ fontSize: '13px', color: '#65A30D' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#65A30D'}
                 >
                   {track.link.label} →
                 </a>
               )}
             </div>
-          </motion.div>
-        ))}
-      </div>
+
+          </div>
+        </motion.div>
+      ))}
     </section>
   )
 }
