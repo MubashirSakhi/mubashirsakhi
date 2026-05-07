@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 const tracks = [
   {
@@ -23,106 +24,121 @@ const tracks = [
 
 const ease = [0.33, 1, 0.68, 1]
 
+function RowWithParallax({ track, i }) {
+  const rowRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ['start end', 'end start'],
+  })
+  const ghostY = useTransform(scrollYProgress, [0, 1], ['40px', '-40px'])
+
+  return (
+    <motion.div
+      ref={rowRef}
+      key={track.num}
+      className="relative overflow-hidden px-8 md:px-12 py-14"
+      style={{ borderBottom: '1px solid #E2E8F0' }}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
+      whileHover={{ backgroundColor: '#F5FAF0' }}
+    >
+      {/* Ghost number — parallax watermark */}
+      <motion.div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: '-0.02em',
+          top: '-0.1em',
+          fontSize: 'clamp(8rem, 20vw, 18rem)',
+          fontFamily: 'Archivo, sans-serif',
+          fontWeight: 700,
+          color: '#EDF7DC',
+          lineHeight: 1,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          y: ghostY,
+        }}
+      >
+        {track.num}
+      </motion.div>
+
+      <div className="max-w-[1100px] mx-auto relative">
+
+        {/* Index label */}
+        <span
+          style={{
+            display: 'block',
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#84CC16',
+            marginBottom: '12px',
+          }}
+        >
+          {track.num}
+        </span>
+
+        {/* Title */}
+        <h2
+          style={{
+            fontSize: 'clamp(2.8rem, 6vw, 5rem)',
+            fontFamily: 'Archivo, sans-serif',
+            fontWeight: 700,
+            letterSpacing: '-0.03em',
+            lineHeight: 1,
+            color: '#0F172A',
+            marginBottom: '20px',
+          }}
+        >
+          {track.title}
+        </h2>
+
+        {/* Animated rule */}
+        <motion.div
+          className="-mx-8 md:-mx-12 origin-left"
+          style={{ height: '1px', backgroundColor: '#E2E8F0', marginBottom: '20px' }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.7, ease }}
+        />
+
+        {/* Body + link */}
+        <div className="md:pl-[clamp(2rem,5vw,4rem)]">
+          <p
+            className="leading-relaxed mb-4"
+            style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '560px' }}
+          >
+            {track.body}
+          </p>
+          {track.link && (
+            <a
+              href={track.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-200"
+              style={{ fontSize: '13px', color: '#65A30D' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
+              onMouseLeave={e => e.currentTarget.style.color = '#65A30D'}
+            >
+              {track.link.label} →
+            </a>
+          )}
+        </div>
+
+      </div>
+    </motion.div>
+  )
+}
+
 export default function WhatIDo() {
   return (
     <section style={{ borderTop: '1px solid #E2E8F0' }}>
       {tracks.map((track, i) => (
-        <motion.div
-          key={track.num}
-          className="relative overflow-hidden px-8 md:px-12 py-14"
-          style={{ borderBottom: '1px solid #E2E8F0' }}
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
-          whileHover={{ backgroundColor: '#F5FAF0' }}
-        >
-          {/* Ghost number — decorative watermark */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              right: '-0.02em',
-              top: '-0.1em',
-              fontSize: 'clamp(8rem, 20vw, 18rem)',
-              fontFamily: 'Archivo, sans-serif',
-              fontWeight: 700,
-              color: '#EDF7DC',
-              lineHeight: 1,
-              pointerEvents: 'none',
-              userSelect: 'none',
-            }}
-          >
-            {track.num}
-          </div>
-
-          <div className="max-w-[1100px] mx-auto relative">
-
-            {/* Index label */}
-            <span
-              style={{
-                display: 'block',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#84CC16',
-                marginBottom: '12px',
-              }}
-            >
-              {track.num}
-            </span>
-
-            {/* Title */}
-            <h2
-              style={{
-                fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                fontFamily: 'Archivo, sans-serif',
-                fontWeight: 700,
-                letterSpacing: '-0.03em',
-                lineHeight: 1,
-                color: '#0F172A',
-                marginBottom: '20px',
-              }}
-            >
-              {track.title}
-            </h2>
-
-            {/* Animated rule */}
-            <motion.div
-              className="-mx-8 md:-mx-12 origin-left"
-              style={{ height: '1px', backgroundColor: '#E2E8F0', marginBottom: '20px' }}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.7, ease }}
-            />
-
-            {/* Body + link */}
-            <div className="md:pl-[clamp(2rem,5vw,4rem)]">
-              <p
-                className="leading-relaxed mb-4"
-                style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '560px' }}
-              >
-                {track.body}
-              </p>
-              {track.link && (
-                <a
-                  href={track.link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors duration-200"
-                  style={{ fontSize: '13px', color: '#65A30D' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#65A30D'}
-                >
-                  {track.link.label} →
-                </a>
-              )}
-            </div>
-
-          </div>
-        </motion.div>
+        <RowWithParallax key={track.num} track={track} i={i} />
       ))}
     </section>
   )

@@ -20,17 +20,18 @@ export default function FeatureSections() {
         {/* Streamguys */}
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-[60px] py-10 mb-10 md:items-center">
           <motion.div className="flex flex-col items-start" {...fadeUp}>
-            <h2 className="feature-heading">I co-founded Streamguys for live event production</h2>
+            <h2 className="feature-heading">Most people don't attend your event. They watch it.</h2>
             <p className="mb-4">
-              I am really keen on quality live streaming production and real-time social media content for creators
-              and brands. Streamguys (2020–present) has delivered end-to-end streaming for{' '}
+              That's the shift we built Streamguys around. We run the full attention engine —
+              capture, edit, publish, distribute in real-time while your event is still happening.
+              We've done it for{' '}
               <a href="https://021disrupt.com" target="_blank" rel="noopener noreferrer">021Disrupt</a>
-              {' '}(Pakistan's flagship tech and startup conference) and{' '}
+              {' '}and{' '}
               <a href="https://www.facebook.com/214349055365750/videos/508094913915527" target="_blank" rel="noopener noreferrer">
-                WOW FESTIVAL
+                WOW Festival
               </a>
-              {' '}by British Council Pakistan.{' '}
-              <span>Hit me up if you want to set up live streaming for your company.</span>
+              {' '}by British Council Pakistan.
+              By the time the session ends, your content is already out. That's how you win attention.
             </p>
             <a
               href="http://www.streamguys.pk"
@@ -54,16 +55,12 @@ export default function FeatureSections() {
         {/* Coding */}
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-[60px] py-10 md:items-center">
           <motion.div className="flex flex-col items-start" {...fadeUp}>
-            <h2 className="feature-heading">
-              I do love to code too!
-            </h2>
+            <h2 className="feature-heading">I use tech to remove bottlenecks</h2>
             <p className="mb-4">
-              I daily invest some of my time coding around different ideas I have. Javascript is my go to language and
-              API development, testing automation and cloud deployment is my playground. I am gradually open sourcing my
-              projects. Here is my{' '}
-              <a href="http://github.com/mubashirsakhi" target="_blank" rel="noopener noreferrer">github</a>
-              {' '}link. I will keep adding more projects soon. Additionally, Wordpress has always come handy for my
-              freelance projects.
+              APIs, automation, internal tools. No-code where it works, custom systems where it matters.
+              I help early-stage teams answer three questions: what to build, what to skip, and how to move
+              faster this week. Everything I can open source is on{' '}
+              <a href="http://github.com/mubashirsakhi" target="_blank" rel="noopener noreferrer">GitHub</a>.
             </p>
           </motion.div>
           <motion.div {...fadeUpDelayed}>
@@ -89,7 +86,7 @@ export default function FeatureSections() {
             className="flex-shrink-0"
           />
           <p className="pl-5 self-center flex-1 mb-0">
-            I enjoy it but sometimes I pull my hairs out in fixing the bugs which are usually stupid mistakes.
+            Some of it ships cleanly. Some of it takes three hours to debug a missing semicolon. Both come with the territory.
           </p>
         </motion.div>
 
@@ -105,14 +102,15 @@ export default function FeatureSections() {
           </motion.div>
           <motion.div {...fadeUpDelayed}>
             <h2 className="feature-heading">
-              Previously, I have worked as a partner at{' '}
+              Managing Partner at{' '}
               <a href="https://10pearls.com" className="text-[#5460fc] no-underline">Twodots</a>
-              {' '}and earlier founded{' '}
+              {'. '}Co-founded{' '}
               <a href="https://wrapkar.com" className="text-[#5460fc] no-underline">Wrapkar.</a>
             </h2>
             <p>
-              We raised $10000 for the startup and gathered more than 5000 vehicles to get it rolling, and recently
-              Twodots got acquired by 10pearls.
+              Wrapkar was a vehicle wrapping startup — raised $10K, put over 5,000 vehicles on the road.
+              Twodots was a design studio I ran as Managing Partner, acquired by 10Pearls.
+              Two different kinds of building. Both useful.
             </p>
           </motion.div>
         </div>
@@ -120,16 +118,16 @@ export default function FeatureSections() {
         {/* Community */}
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-[60px] py-10 md:items-center">
           <motion.div className="flex flex-col items-start" {...fadeUp}>
-            <h2 className="feature-heading">I believe in working in collaboration</h2>
+            <h2 className="feature-heading">12,000+ builders in one place</h2>
             <p className="mb-4">
-              I have been lucky to be running a tech community with the name{' '}
               <a href="https://www.facebook.com/groups/tgpak" target="_blank" rel="noopener noreferrer">
-                Tech Geeks of Pakistan.
+                Tech Geeks of Pakistan
               </a>
-              {' '}We are more than 12K members and engagement and collaboration happening there is tremendous and
-              helpful for everybody. Plus, I also serve as an ENTREPRENEUR IN RESIDENCE at{' '}
+              {' '}— no noise, just builders. People share work, collaborate, and actually ship things.
+              From 2017–2020 I also served as Entrepreneur in Residence at{' '}
               <a href="https://thenestio.com/about#eirs" target="_blank" rel="noopener noreferrer">The Nest I/O</a>
-              , where I help startups with their tech related problems.
+              {', '}helping early-stage startups work through technical decisions.
+              If you're building in Pakistan, you'll fit in.
             </p>
           </motion.div>
           <motion.div {...fadeUpDelayed}>
@@ -145,11 +143,12 @@ export default function FeatureSections() {
         {/* Renewable Energy */}
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-[60px] py-10 md:items-center">
           <motion.div className="flex flex-col items-start" {...fadeUp}>
-            <h2 className="feature-heading">Currently, I work in wholesale renewable energy</h2>
+            <h2 className="feature-heading">Energy — Enova</h2>
             <p className="mb-4">
-              Pakistan is in an energy transition and I'm operating on the wholesale side — sourcing and trading
-              renewable energy capacity to industrial and commercial buyers. It's a market that rewards people who
-              understand both the technical and commercial sides. That's where I operate.
+              Pakistan's energy market is unstable. That's exactly why it's interesting.
+              With Enova I'm building on the supply side — sourcing from China, building supplier
+              relationships, supplying retailers and installers, creating demand through digital funnels.
+              It's margin, logistics, and timing. Most people don't see that layer. I operate in it.
             </p>
           </motion.div>
           <motion.div

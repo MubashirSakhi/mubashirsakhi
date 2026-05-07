@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 const ease = [0.33, 1, 0.68, 1]
 
@@ -32,8 +33,17 @@ const stats = [
 ]
 
 export default function Hero() {
+  const sectionRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+  const mubashirX = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  const sakhiX    = useTransform(scrollYProgress, [0, 1], ['0%',  '18%'])
+
   return (
     <section
+      ref={sectionRef}
       className="relative min-h-screen overflow-hidden"
       style={{ backgroundColor: '#FFFEF9' }}
     >
@@ -42,7 +52,7 @@ export default function Hero() {
         <div className="flex-grow flex flex-col justify-center">
 
           {/* MUBASHIR */}
-          <div className="overflow-hidden">
+          <motion.div className="overflow-hidden" style={{ x: mubashirX }}>
             <motion.div
               style={nameStyle}
               initial={{ x: '-100%' }}
@@ -51,7 +61,7 @@ export default function Hero() {
             >
               MUBASHIR
             </motion.div>
-          </div>
+          </motion.div>
 
           {/* Pink rule — 2px, full bleed */}
           <motion.div
@@ -63,7 +73,7 @@ export default function Hero() {
           />
 
           {/* SAKHI */}
-          <div className="overflow-hidden">
+          <motion.div className="overflow-hidden" style={{ x: sakhiX }}>
             <motion.div
               style={{ ...nameStyle, textAlign: 'right' }}
               initial={{ x: '100%' }}
@@ -72,7 +82,7 @@ export default function Hero() {
             >
               SAKHI
             </motion.div>
-          </div>
+          </motion.div>
 
           {/* Tagline */}
           <motion.div

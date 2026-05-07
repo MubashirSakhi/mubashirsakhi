@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useSpring, useTransform, useScroll } from 'framer-motion'
 
 const certs = [
   'Growth Driven Design',
@@ -9,10 +9,12 @@ const certs = [
 ]
 
 export default function Community() {
+  const sectionRef = useRef(null)
   const countRef = useRef(null)
   const isInView = useInView(countRef, { once: true, margin: '-80px' })
   const [count, setCount] = useState(0)
 
+  // Count-up animation
   useEffect(() => {
     if (!isInView) return
     const target = 12000
@@ -27,8 +29,22 @@ export default function Community() {
     requestAnimationFrame(tick)
   }, [isInView])
 
+  // Scale pulse: inflates from 0.82 → 1.04 → 1.0 as counter enters view
+  const scaleProgress = useSpring(0, { stiffness: 60, damping: 18 })
+  useEffect(() => {
+    if (isInView) scaleProgress.set(1)
+  }, [isInView, scaleProgress])
+  const counterScale = useTransform(scaleProgress, [0, 0.7, 1], [0.82, 1.04, 1.0])
+
+  // Ambient y drift as section scrolls through viewport
+  const { scrollYProgress: sectionProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  const counterDriftY = useTransform(sectionProgress, [0, 1], ['20px', '-20px'])
+
   return (
-    <section className="px-8 md:px-12 py-20" style={{ borderTop: '1px solid #E2E8F0' }}>
+    <section ref={sectionRef} className="px-8 md:px-12 py-20" style={{ borderTop: '1px solid #E2E8F0' }}>
       <div className="max-w-[1100px] mx-auto">
 
         {/* Enormous number */}
@@ -37,20 +53,23 @@ export default function Community() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
+          style={{ y: counterDriftY }}
         >
-          <div
+          <motion.div
             ref={countRef}
             style={{
-              fontSize: 'clamp(5rem, 18vw, 16rem)',
+              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
               fontFamily: 'Archivo, sans-serif',
               fontWeight: 700,
               letterSpacing: '-0.04em',
               lineHeight: 0.85,
               color: '#84CC16',
+              scale: counterScale,
+              transformOrigin: 'left center',
             }}
           >
             {count.toLocaleString()}+
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Bottom row — label + certs */}

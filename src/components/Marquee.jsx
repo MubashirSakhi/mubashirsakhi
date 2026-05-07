@@ -1,3 +1,6 @@
+import { useRef } from 'react'
+import { useScroll, useVelocity, useSpring, useMotionValueEvent } from 'framer-motion'
+
 const topItems = [
   '12,000+ Community Members',
   '$10K Raised',
@@ -19,6 +22,21 @@ const bottomItems = [
 ]
 
 export default function Marquee() {
+  const topTrackRef = useRef(null)
+  const bottomTrackRef = useRef(null)
+
+  const { scrollY } = useScroll()
+  const scrollVelocity = useVelocity(scrollY)
+  const smoothVelocity = useSpring(scrollVelocity, { stiffness: 80, damping: 30 })
+
+  useMotionValueEvent(smoothVelocity, 'change', (v) => {
+    const factor = Math.min(1 + Math.abs(v) / 1200, 4)
+    if (topTrackRef.current)
+      topTrackRef.current.style.animationDuration = `${28 / factor}s`
+    if (bottomTrackRef.current)
+      bottomTrackRef.current.style.animationDuration = `${22 / factor}s`
+  })
+
   return (
     <div
       className="overflow-hidden"
@@ -26,6 +44,7 @@ export default function Marquee() {
     >
       {/* Top track — left to right */}
       <div
+        ref={topTrackRef}
         className="flex whitespace-nowrap marquee-track"
         style={{ padding: '11px 0', borderBottom: '1px solid #E2E8F0' }}
       >
@@ -48,6 +67,7 @@ export default function Marquee() {
 
       {/* Bottom track — right to left */}
       <div
+        ref={bottomTrackRef}
         className="flex whitespace-nowrap marquee-track-reverse"
         style={{ padding: '11px 0' }}
       >
