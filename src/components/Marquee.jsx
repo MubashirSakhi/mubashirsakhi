@@ -1,91 +1,95 @@
-import { useRef } from 'react'
-import { useScroll, useVelocity, useSpring, useMotionValueEvent } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { __tickers, __startTicker } from '../hooks'
 
-const topItems = [
-  '12,000+ Community Members',
-  '$10K Raised',
-  '5,000+ Vehicles Wrapped',
-  '3 Active Ventures',
-  'WOW Festival',
-  '021Disrupt',
-  'No fluff. Just things shipped.',
+const TOP_ITEMS = [
+  { text: 'Streamguys',        kind: 'solid'   },
+  { text: 'WOW Festival',      kind: 'outline' },
+  { text: '021Disrupt',        kind: 'solid'   },
+  { text: 'Enova',             kind: 'outline' },
+  { text: 'Tech Geeks of Pakistan', kind: 'solid' },
+  { text: 'Wrapkar',           kind: 'outline' },
+  { text: 'Twodots → 10Pearls', kind: 'solid'  },
+  { text: 'The Nest I/O',      kind: 'outline' },
 ]
 
-const bottomItems = [
-  'Live Events',
-  'Renewable Energy',
-  'JavaScript / Node.js',
-  'No-Code Tooling',
-  'Streamguys',
-  'Enova',
-  'Tech Geeks of Pakistan',
+const BOT_ITEMS = [
+  'Live Events', 'Renewable Energy', 'JavaScript / Node.js',
+  'No-Code Tooling', 'Community', 'Operations', 'Sourcing', 'Distribution',
 ]
 
-export default function Marquee() {
-  const topTrackRef = useRef(null)
-  const bottomTrackRef = useRef(null)
+const DOT_COLORS = ['var(--accent)', 'var(--accent-3)', 'var(--accent-4)']
 
-  const { scrollY } = useScroll()
-  const scrollVelocity = useVelocity(scrollY)
-  const smoothVelocity = useSpring(scrollVelocity, { stiffness: 80, damping: 30 })
+function MarqueeTrack({ items, baseSpeed = 30, direction = 1, render }) {
+  const trackRef = useRef(null)
+  const xRef = useRef(0)
+  const widthRef = useRef(0)
+  const lastScrollRef = useRef(window.scrollY)
+  const velocityRef = useRef(0)
 
-  useMotionValueEvent(smoothVelocity, 'change', (v) => {
-    const factor = Math.min(1 + Math.abs(v) / 1200, 4)
-    if (topTrackRef.current)
-      topTrackRef.current.style.animationDuration = `${28 / factor}s`
-    if (bottomTrackRef.current)
-      bottomTrackRef.current.style.animationDuration = `${22 / factor}s`
-  })
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+    widthRef.current = el.scrollWidth / 2
+    let last = performance.now()
+    const tick = (now) => {
+      now = now || performance.now()
+      const dt = Math.min(now - last, 50)
+      last = now
+      const cur = window.scrollY
+      const dy = cur - lastScrollRef.current
+      lastScrollRef.current = cur
+      velocityRef.current = velocityRef.current * 0.88 + dy * 0.12
+      const boost = 1 + Math.min(Math.abs(velocityRef.current) * 3, 3)
+      xRef.current -= direction * (baseSpeed / 1000) * dt * boost
+      const w = widthRef.current
+      if (w > 0) {
+        if (xRef.current <= -w) xRef.current += w
+        if (xRef.current >= 0 && direction < 0) xRef.current -= w
+      }
+      el.style.transform = `translateX(${xRef.current}px)`
+    }
+    __tickers.add(tick)
+    __startTicker()
+    const ro = new ResizeObserver(() => { widthRef.current = el.scrollWidth / 2 })
+    ro.observe(el)
+    return () => { __tickers.delete(tick); ro.disconnect() }
+  }, [baseSpeed, direction])
 
   return (
-    <div
-      className="overflow-hidden"
-      style={{ borderTop: '2px solid #CBD5E1', borderBottom: '2px solid #CBD5E1' }}
-    >
-      {/* Top track — left to right */}
-      <div
-        ref={topTrackRef}
-        className="flex whitespace-nowrap marquee-track"
-        style={{ padding: '11px 0', borderBottom: '1px solid #E2E8F0' }}
-      >
-        {[...topItems, ...topItems].map((item, i) => (
-          <span
-            key={i}
-            style={{
-              padding: '0 2.8rem',
-              fontSize: '12px',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: '#84CC16',
-            }}
-          >
-            {item}
-            <span style={{ color: '#CBD5E1', marginLeft: '2.8rem' }}>·</span>
-          </span>
-        ))}
-      </div>
+    <div className="marquee-track" ref={trackRef}>
+      {[...items, ...items].map((it, i) => render(it, i))}
+    </div>
+  )
+}
 
-      {/* Bottom track — right to left */}
-      <div
-        ref={bottomTrackRef}
-        className="flex whitespace-nowrap marquee-track-reverse"
-        style={{ padding: '11px 0' }}
-      >
-        {[...bottomItems, ...bottomItems].map((item, i) => (
-          <span
-            key={i}
-            style={{
-              padding: '0 2.8rem',
-              fontSize: '12px',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: '#94A3B8',
-            }}
-          >
-            {item}
-            <span style={{ color: '#E2E8F0', marginLeft: '2.8rem' }}>·</span>
-          </span>
-        ))}
+export default function Marquee() {
+  return (
+    <div className="marquee" style={{ padding: 0 }}>
+      <div style={{ borderBottom: '1px solid var(--ink-hair)', padding: '14px 0' }}>
+        <MarqueeTrack
+          items={TOP_ITEMS}
+          baseSpeed={40}
+          direction={1}
+          render={(it, i) => (
+            <span key={i} className={`marquee-item ${it.kind === 'outline' ? 'outline' : ''}`}>
+              {it.text}
+              <span className="dot-sep" style={{ background: DOT_COLORS[i % 3] }} />
+            </span>
+          )}
+        />
+      </div>
+      <div style={{ padding: '14px 0' }}>
+        <MarqueeTrack
+          items={BOT_ITEMS}
+          baseSpeed={28}
+          direction={-1}
+          render={(it, i) => (
+            <span key={i} className="marquee-item outline" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)' }}>
+              {it}
+              <span className="dot-sep" style={{ background: 'var(--accent-2)' }} />
+            </span>
+          )}
+        />
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -6,10 +7,15 @@ import WhatIDo from './components/WhatIDo'
 import TrackRecord from './components/TrackRecord'
 import Community from './components/Community'
 import Listening from './components/Listening'
-import Medium from './components/Medium'
+import Writing from './components/Writing'
 import ContactFooter from './components/ContactFooter'
 
 export default function App() {
+  useEffect(() => {
+    document.documentElement.classList.add('js-ready')
+    return () => { document.documentElement.classList.remove('js-ready') }
+  }, [])
+
   return (
     <>
       <ScrollProgress />
@@ -21,7 +27,7 @@ export default function App() {
         <TrackRecord />
         <Community />
         <Listening />
-        <Medium />
+        <Writing />
       </main>
       <ContactFooter />
     </>
