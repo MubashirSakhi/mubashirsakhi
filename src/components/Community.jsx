@@ -1,134 +1,57 @@
-import { useRef, useEffect, useState } from 'react'
-import { motion, useInView, useSpring, useTransform, useScroll } from 'framer-motion'
+import { useInView, useCountUp, Reveal } from '../hooks'
 
-const certs = [
-  'Growth Driven Design',
-  'Digital Garage — Google',
-  'Data Structures & Algorithms',
-  'Meditation & Mindfulness',
+const CERTS = [
+  { name: 'Growth Driven Design',       source: 'HubSpot'    },
+  { name: 'Digital Garage',             source: 'Google'     },
+  { name: 'Data Structures & Algorithms', source: 'Coursera' },
+  { name: 'Meditation & Mindfulness',   source: 'Masterclass' },
 ]
 
 export default function Community() {
-  const sectionRef = useRef(null)
-  const countRef = useRef(null)
-  const isInView = useInView(countRef, { once: true, margin: '-80px' })
-  const [count, setCount] = useState(0)
-
-  // Count-up animation
-  useEffect(() => {
-    if (!isInView) return
-    const target = 12000
-    const duration = 1600
-    const start = performance.now()
-    const tick = (now) => {
-      const t = Math.min((now - start) / duration, 1)
-      const ease = 1 - Math.pow(1 - t, 3)
-      setCount(Math.round(ease * target))
-      if (t < 1) requestAnimationFrame(tick)
-    }
-    requestAnimationFrame(tick)
-  }, [isInView])
-
-  // Scale pulse: inflates from 0.82 → 1.04 → 1.0 as counter enters view
-  const scaleProgress = useSpring(0, { stiffness: 60, damping: 18 })
-  useEffect(() => {
-    if (isInView) scaleProgress.set(1)
-  }, [isInView, scaleProgress])
-  const counterScale = useTransform(scaleProgress, [0, 0.7, 1], [0.82, 1.04, 1.0])
-
-  // Ambient y drift as section scrolls through viewport
-  const { scrollYProgress: sectionProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const counterDriftY = useTransform(sectionProgress, [0, 1], ['20px', '-20px'])
+  const [ref, inView] = useInView({ rootMargin: '-80px' })
+  const count = useCountUp(12000, 2000, inView)
 
   return (
-    <section ref={sectionRef} className="px-8 md:px-12 py-20" style={{ borderTop: '1px solid #E2E8F0' }}>
-      <div className="max-w-[1100px] mx-auto">
-
-        {/* Enormous number */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          style={{ y: counterDriftY }}
-        >
-          <motion.div
-            ref={countRef}
-            style={{
-              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
-              fontFamily: 'Archivo, sans-serif',
-              fontWeight: 700,
-              letterSpacing: '-0.04em',
-              lineHeight: 0.85,
-              color: '#84CC16',
-              scale: counterScale,
-              transformOrigin: 'left center',
-            }}
-          >
-            {count.toLocaleString()}+
-          </motion.div>
-        </motion.div>
-
-        {/* Bottom row — label + certs */}
-        <motion.div
-          className="flex justify-between items-end flex-wrap gap-8 mt-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-        >
+    <section className="community" ref={ref}>
+      <div className="wrap">
+        <div className="community-grid">
           <div>
-            <p style={{
-              fontSize: '11px',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#64748B',
-              marginBottom: '12px',
-            }}>
-              Members / Tech Geeks of Pakistan
-            </p>
-            <p style={{ fontFamily: 'Caveat, cursive', fontSize: '1.3rem', color: '#64748B', marginBottom: '12px', lineHeight: 1.5 }}>
-              No noise. Just builders. People share work, collaborate, and actually ship things.
+            <span className="eyebrow">§ 03 / Community</span>
+            <div className={`big-count ${inView ? 'in-view' : ''}`} style={{ marginTop: 22 }}>
+              <span>{count.toLocaleString()}</span>
+              <span className="plus">+</span>
+              <span className="underline" />
+            </div>
+            <p className="mono" style={{ marginTop: 18, color: 'rgba(26,24,20,0.6)', fontSize: 11 }}>
+              members · Tech Geeks of Pakistan
             </p>
             <a
+              className="btn-paper"
               href="https://www.facebook.com/groups/tgpak"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors duration-200"
-              style={{ fontSize: '13px', color: '#65A30D' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
-              onMouseLeave={e => e.currentTarget.style.color = '#65A30D'}
+              style={{ marginTop: 22, display: 'inline-flex' }}
             >
-              Visit community →
+              Visit the group ↗
             </a>
           </div>
-
-          <div style={{ maxWidth: '300px' }}>
-            <p style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#64748B',
-              marginBottom: '16px',
-            }}>
-              Certifications
+          <div className="community-side">
+            <p>
+              No noise. <em>Just builders.</em> People share work, collaborate, and actually ship things.
             </p>
-            {certs.map((cert) => (
-              <div
-                key={cert}
-                className="py-3 text-[0.875rem]"
-                style={{ borderBottom: '1px solid #E2E8F0', color: '#64748B' }}
-              >
-                {cert}
+            <div>
+              <span className="mono" style={{ color: 'rgba(26,24,20,0.55)' }}>Also certified in</span>
+              <div className="cert-list">
+                {CERTS.map((c, i) => (
+                  <Reveal key={c.name} delay={i + 1} as="div" className="cert">
+                    <span className="cert-name">{c.name}</span>
+                    <span className="cert-source">{c.source}</span>
+                  </Reveal>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
-        </motion.div>
-
+        </div>
       </div>
     </section>
   )
