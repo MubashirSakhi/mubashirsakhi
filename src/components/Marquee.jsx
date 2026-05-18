@@ -2,10 +2,11 @@ import { useRef } from 'react'
 import { useScroll, useVelocity, useSpring, useMotionValueEvent } from 'framer-motion'
 
 const topItems = [
-  '12,000+ Community Members',
+  '120+ Events Covered',
+  '8.4M Impressions',
+  'First Post in <60 Min',
   '$10K Raised',
-  '5,000+ Vehicles Wrapped',
-  '3 Active Ventures',
+  '12,000+ Community Members',
   'WOW Festival',
   '021Disrupt',
   'No fluff. Just things shipped.',

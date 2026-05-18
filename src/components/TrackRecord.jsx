@@ -79,7 +79,7 @@ export default function TrackRecord() {
         {projects.map((project, i) => (
           <motion.div
             key={project.num}
-            className="relative p-8 md:p-10"
+            className="group relative p-8 md:p-10"
             style={{
               borderBottom: '1px solid #E2E8F0',
               borderRight: '1px solid #E2E8F0',
@@ -89,11 +89,12 @@ export default function TrackRecord() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: (i % 2) * 0.08, ease: 'easeOut' }}
-            whileHover={{ backgroundColor: '#F0F9E4' }}
+            whileHover={{ backgroundColor: '#0F172A', borderColor: '#0F172A' }}
           >
             {/* Ghost number */}
             <div
               aria-hidden="true"
+              className="text-[#EDF7DC] group-hover:text-white transition-colors duration-300"
               style={{
                 position: 'absolute',
                 top: '12px',
@@ -101,7 +102,6 @@ export default function TrackRecord() {
                 fontSize: '4.5rem',
                 fontFamily: 'Archivo, sans-serif',
                 fontWeight: 700,
-                color: '#EDF7DC',
                 lineHeight: 1,
                 userSelect: 'none',
                 pointerEvents: 'none',
@@ -111,41 +111,44 @@ export default function TrackRecord() {
             </div>
 
             {/* Period */}
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: '#84CC16',
-              display: 'block',
-              marginBottom: '8px',
-            }}>
+            <span
+              className="block text-[#84CC16] group-hover:text-white transition-colors duration-200"
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+              }}
+            >
               {project.period}
             </span>
 
             {/* Name */}
-            <h3 style={{
-              fontSize: 'clamp(1.6rem, 3.5vw, 2.5rem)',
-              fontFamily: 'Archivo, sans-serif',
-              fontWeight: 700,
-              letterSpacing: '-0.03em',
-              lineHeight: 1.05,
-              color: '#0F172A',
-              marginBottom: '4px',
-            }}>
+            <h3
+              className="text-[#0F172A] group-hover:text-white transition-colors duration-200"
+              style={{
+                fontSize: 'clamp(1.6rem, 3.5vw, 2.5rem)',
+                fontFamily: 'Archivo, sans-serif',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                lineHeight: 1.05,
+                marginBottom: '4px',
+              }}
+            >
               {project.name}
             </h3>
 
             {/* Role */}
-            <p style={{ fontSize: '0.8rem', color: '#64748B', marginBottom: '16px' }}>
+            <p className="text-[#64748B] group-hover:text-[#94A3B8] transition-colors duration-200" style={{ fontSize: '0.8rem', marginBottom: '16px' }}>
               {project.role}
             </p>
 
             {/* Rule */}
-            <div style={{ height: '1px', backgroundColor: '#E2E8F0', marginBottom: '16px' }} />
+            <div className="bg-[#E2E8F0] group-hover:bg-[#334155] transition-colors duration-200" style={{ height: '1px', marginBottom: '16px' }} />
 
             {/* Description */}
-            <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: 1.7, marginBottom: '20px' }}>
+            <p className="text-[#64748B] group-hover:text-[#94A3B8] transition-colors duration-200" style={{ fontSize: '0.875rem', lineHeight: 1.7, marginBottom: '20px' }}>
               {project.description}
             </p>
 
@@ -154,12 +157,11 @@ export default function TrackRecord() {
               {project.tags.map(tag => (
                 <span
                   key={tag}
+                  className="text-[#64748B] group-hover:text-[#94A3B8] border border-[#CBD5E1] group-hover:border-[#334155] transition-colors duration-200"
                   style={{
                     fontSize: '10px',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: '#64748B',
-                    border: '1px solid #CBD5E1',
                     padding: '4px 10px',
                     marginRight: '-1px',
                     marginBottom: '-1px',
@@ -176,10 +178,8 @@ export default function TrackRecord() {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors duration-200"
-                style={{ fontSize: '13px', color: '#65A30D' }}
-                onMouseEnter={e => e.currentTarget.style.color = '#0F172A'}
-                onMouseLeave={e => e.currentTarget.style.color = '#65A30D'}
+                className="text-[#65A30D] group-hover:text-[#84CC16] transition-colors duration-200"
+                style={{ fontSize: '13px' }}
               >
                 Visit →
               </a>
