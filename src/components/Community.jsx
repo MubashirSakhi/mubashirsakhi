@@ -1,4 +1,4 @@
-import { useInView, useCountUp, Reveal } from '../hooks'
+import { Reveal } from '../hooks'
 
 const CERTS = [
   { name: 'Growth Driven Design',       source: 'HubSpot'    },
@@ -8,20 +8,19 @@ const CERTS = [
 ]
 
 export default function Community() {
-  const [ref, inView] = useInView({ rootMargin: '-80px' })
-  const count = useCountUp(12000, 2000, inView)
-
   return (
-    <section className="community" ref={ref}>
+    <section className="community">
       <div className="wrap">
         <div className="community-grid">
           <div>
             <span className="eyebrow">§ 03 / Community</span>
-            <div className={`big-count ${inView ? 'in-view' : ''}`} style={{ marginTop: 22 }}>
-              <span>{count.toLocaleString()}</span>
-              <span className="plus">+</span>
-              <span className="underline" />
-            </div>
+            <Reveal>
+              <div className="big-count" style={{ marginTop: 22 }}>
+                <span>12,000</span>
+                <span className="plus">+</span>
+                <span className="underline" />
+              </div>
+            </Reveal>
             <p className="mono" style={{ marginTop: 18, color: 'rgba(26,24,20,0.6)', fontSize: 11 }}>
               members · Tech Geeks of Pakistan
             </p>

@@ -8,6 +8,7 @@ import TrackRecord from './components/TrackRecord'
 import Community from './components/Community'
 import Listening from './components/Listening'
 import Writing from './components/Writing'
+import Goodreads from './components/Goodreads'
 import ContactFooter from './components/ContactFooter'
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         <Community />
         <Listening />
         <Writing />
+        <Goodreads />
       </main>
       <ContactFooter />
     </>
