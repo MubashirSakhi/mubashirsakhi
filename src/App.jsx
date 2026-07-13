@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -10,13 +11,10 @@ import Listening from './components/Listening'
 import Writing from './components/Writing'
 import Goodreads from './components/Goodreads'
 import ContactFooter from './components/ContactFooter'
+import Graveyard from './pages/Graveyard'
+import CaseStudy from './pages/CaseStudy'
 
-export default function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('js-ready')
-    return () => { document.documentElement.classList.remove('js-ready') }
-  }, [])
-
+function Home() {
   return (
     <>
       <ScrollProgress />
@@ -32,6 +30,31 @@ export default function App() {
         <Goodreads />
       </main>
       <ContactFooter />
+    </>
+  )
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
+
+export default function App() {
+  useEffect(() => {
+    document.documentElement.classList.add('js-ready')
+    return () => { document.documentElement.classList.remove('js-ready') }
+  }, [])
+
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/graveyard" element={<Graveyard />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </>
   )
 }
