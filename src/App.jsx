@@ -10,6 +10,7 @@ import Community from './components/Community'
 import Listening from './components/Listening'
 import Writing from './components/Writing'
 import Goodreads from './components/Goodreads'
+import Coffee from './components/Coffee'
 import ContactFooter from './components/ContactFooter'
 import Graveyard from './pages/Graveyard'
 import CaseStudy from './pages/CaseStudy'
@@ -28,6 +29,7 @@ function Home() {
         <Listening />
         <Writing />
         <Goodreads />
+        <Coffee />
       </main>
       <ContactFooter />
     </>

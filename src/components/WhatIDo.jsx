@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useInView, Reveal, __tickers, __startTicker } from '../hooks'
 
 const TRACKS = [
@@ -20,7 +21,7 @@ const TRACKS = [
     body: "Pakistan's energy market is unstable. That's exactly why it's interesting. With Enova I'm building on the supply side — sourcing from China, supplier relationships, supplying retailers and installers, creating demand through digital funnels. Margin, logistics, and timing. Most people don't see that layer. I operate in it.",
     tags: ['Renewable', 'Wholesale', 'Logistics'],
     accent: 'accent-2',
-    link: null,
+    link: { label: 'Read more →', to: '/work/enova' },
   },
   {
     num: '03',
@@ -73,7 +74,15 @@ function Track({ t, i }) {
       </div>
       <div className="track-body">
         <p>{t.body}</p>
-        {t.link && (
+        {t.link && (t.link.to ? (
+          <Link
+            className="link"
+            to={t.link.to}
+            style={{ color: `var(--${t.accent})`, borderBottomColor: `var(--${t.accent})` }}
+          >
+            {t.link.label}
+          </Link>
+        ) : (
           <a
             className="link"
             href={t.link.href}
@@ -83,7 +92,7 @@ function Track({ t, i }) {
           >
             {t.link.label}
           </a>
-        )}
+        ))}
       </div>
     </div>
   )

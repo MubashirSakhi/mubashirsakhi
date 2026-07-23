@@ -1112,6 +1112,128 @@ section { position: relative; }
 }
 
 /* ============================================================
+   COFFEE / INTERLUDE
+   ============================================================ */
+
+.coffee {
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background: #05060a;
+}
+
+.coffee-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  filter: saturate(1.05) contrast(1.02);
+  animation: coffee-kenburns 34s ease-in-out infinite alternate;
+}
+@keyframes coffee-kenburns {
+  from { transform: scale(1.06) translate3d(0, 0, 0); }
+  to   { transform: scale(1.14) translate3d(-1.5%, -2%, 0); }
+}
+
+.coffee-grade { position: absolute; inset: 0; pointer-events: none; }
+.coffee-grade.tone {
+  background: linear-gradient(180deg, rgba(5, 7, 14, 0.42) 0%, rgba(5, 7, 14, 0.05) 32%, rgba(5, 7, 14, 0.28) 62%, rgba(5, 6, 10, 0.86) 100%);
+}
+.coffee-grade.vignette {
+  background: radial-gradient(ellipse 78% 74% at 50% 42%, transparent 46%, rgba(4, 5, 9, 0.7) 100%);
+}
+.coffee-grade.grain {
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+.coffee-bar { position: absolute; left: 0; right: 0; height: clamp(28px, 6vh, 64px); background: #050609; z-index: 6; }
+.coffee-bar.top { top: 0; }
+.coffee-bar.bot { bottom: 0; }
+
+.coffee-content {
+  position: absolute;
+  z-index: 7;
+  left: 0; right: 0;
+  bottom: clamp(64px, 13vh, 140px);
+}
+.coffee-eyebrow { margin: 0 0 clamp(16px, 2.4vh, 26px); }
+.coffee-headline {
+  font-family: var(--f-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  margin: 0;
+  font-size: clamp(52px, 10.5vw, 168px);
+  color: var(--ink);
+  text-shadow: 0 6px 60px rgba(0, 0, 0, 0.6);
+}
+.coffee-headline em {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--accent-4);
+}
+.coffee-sub {
+  max-width: 34ch;
+  margin: clamp(22px, 3.4vh, 38px) 0 0;
+  font-size: clamp(15px, 1.5vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+.coffee-dot { color: var(--accent-4); }
+.coffee-line {
+  margin: clamp(14px, 2vh, 22px) 0 0;
+  font-family: var(--f-body);
+  font-weight: 500;
+  font-size: clamp(14px, 1.3vw, 17px);
+  color: var(--ink-faint);
+}
+.coffee-line em {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-4);
+}
+
+.coffee-foot {
+  position: absolute;
+  z-index: 8;
+  bottom: clamp(20px, 4vh, 34px);
+  right: clamp(24px, 5vw, 64px);
+}
+.coffee-hint {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.coffee-pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-4);
+  animation: coffee-blink 2.4s ease-in-out infinite;
+}
+@keyframes coffee-blink { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+@media (max-width: 640px) {
+  .coffee-content { bottom: clamp(80px, 16vh, 120px); }
+  .coffee-sub { max-width: 28ch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coffee-video { animation: none; transform: scale(1.04); }
+}
+
+/* ============================================================
    CONTACT
    ============================================================ */
 

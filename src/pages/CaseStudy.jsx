@@ -30,6 +30,7 @@ const CASES = {
       { k: 'Where', v: 'Karachi, PK' },
       { k: 'Span', v: '2 years, hands-on' },
       { k: 'Scope', v: 'Brand → ops, end to end' },
+      { k: 'Site', v: <a href="https://enova.pk" target="_blank" rel="noreferrer">enova.pk ↗</a> },
     ],
     intro: ['I joined Enova when it was little more than an idea and a warehouse. ',
             'Over two years I ended up touching almost every part of it',
