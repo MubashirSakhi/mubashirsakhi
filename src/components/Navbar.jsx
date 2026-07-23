@@ -20,8 +20,6 @@ export default function Navbar() {
         <span>Mubashir Sakhi</span>
       </Link>
       <div className="nav-time" style={{ display: 'flex', gap: 24 }}>
-        <Link to="/work/enova" style={{ opacity: 0.8 }}>Work</Link>
-        <Link to="/graveyard" style={{ opacity: 0.8 }}>Graveyard</Link>
         <span style={{ opacity: 0.6 }}>Karachi</span>
         <span>{time}</span>
       </div>
