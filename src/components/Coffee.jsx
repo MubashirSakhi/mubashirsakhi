@@ -1,10 +1,13 @@
 import coffeeVideo from '../assets/mubashir-coffee-video.mp4'
-import { Reveal } from '../hooks'
+import { Reveal, useInView } from '../hooks'
 
 export default function Coffee() {
+  const [ref, inView] = useInView()
   return (
-    <section className="coffee">
-      <video className="coffee-video" src={coffeeVideo} autoPlay muted loop playsInline />
+    <section className="coffee" ref={ref}>
+      {inView && (
+        <video className="coffee-video" src={coffeeVideo} autoPlay muted loop playsInline preload="none" />
+      )}
       <div className="coffee-grade tone" />
       <div className="coffee-grade vignette" />
       <div className="coffee-grade grain" />

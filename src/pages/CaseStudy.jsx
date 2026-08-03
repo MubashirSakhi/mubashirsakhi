@@ -203,7 +203,7 @@ function Pinboard({ projects, company }) {
               <div className="pin-kicker"><span>{p.kicker}</span><span className="n">{pad2(i + 1)}</span></div>
               <h3 className="pin-title">{emph(p.title)}</h3>
               <div className="pin-slot cs-slot">
-                {p.img && <img src={p.img} alt={p.cap} draggable="false" />}
+                {p.img && <img src={p.img} alt={p.cap} draggable="false" loading="lazy" />}
                 <span className="cap">{p.cap}</span>
               </div>
               <p className="pin-blurb">{p.blurb}</p>

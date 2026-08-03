@@ -60,6 +60,7 @@ function BookCover({ b }) {
           <img
             src={b.cover}
             alt={b.title}
+            loading="lazy"
             className={`book-img ${loaded ? 'loaded' : ''}`}
             onLoad={() => setLoaded(true)}
             onError={() => setErrored(true)}

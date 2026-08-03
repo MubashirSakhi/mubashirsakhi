@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
@@ -12,8 +12,9 @@ import Writing from './components/Writing'
 import Goodreads from './components/Goodreads'
 import Coffee from './components/Coffee'
 import ContactFooter from './components/ContactFooter'
-import Graveyard from './pages/Graveyard'
-import CaseStudy from './pages/CaseStudy'
+
+const Graveyard = lazy(() => import('./pages/Graveyard'))
+const CaseStudy = lazy(() => import('./pages/CaseStudy'))
 
 function Home() {
   return (
@@ -51,12 +52,14 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/graveyard" element={<Graveyard />} />
-        <Route path="/work/:slug" element={<CaseStudy />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/graveyard" element={<Graveyard />} />
+          <Route path="/work/:slug" element={<CaseStudy />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </>
   )
 }
