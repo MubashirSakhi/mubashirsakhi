@@ -1,3 +1,10 @@
 node_modules/
 dist/
 .DS_Store
+
+# Local agent tooling. Vendored third-party skill source — not ours to
+# redistribute from a public repo. Keeps .github/workflows/ tracked.
+.claude/
+.impeccable/
+.github/skills/
+.github/hooks/
