@@ -1,0 +1,49 @@
+# Mubashir Sakhi
+
+> Multi-hyphenate operator and builder based in Karachi, Pakistan. Works across
+> four tracks: live event production, wholesale renewable energy, software, and
+> startup community. Co-founder of Streamguys and operator at Enova. Founder of
+> Tech Geeks of Pakistan (12,000+ members). NED University engineering graduate.
+
+Hire-relevant summary: a generalist executor rather than a specialist. Track
+record spans launching and running ventures end to end — brand, ops, tech, and
+distribution — not a single functional lane.
+
+## Current work
+
+- **Streamguys** (co-founder, 2020–present) — live event production and
+  real-time social media content across Pakistan. Notable events: WOW Festival
+  (British Council Pakistan), 021Disrupt.
+- **Renewable energy** — wholesale distribution. Previously built the operating
+  surface for Enova, a B2B renewable-energy brand (solar panels, inverters,
+  lithium batteries, 12V DC and lighting).
+- **Software** — JavaScript and Node.js, REST APIs, open-source projects.
+- **Advisory** — helps early startups validate ideas with no-code tools before
+  committing to engineering.
+
+## Background
+
+- **Tech Geeks of Pakistan** — founder, 12,000+ member community.
+- **The Nest I/O** — Entrepreneur in Residence, 2017–2020.
+- **Two Dots Design Studio** — Managing Partner; acquired by 10Pearls.
+- **Wrapkar** — co-founder, vehicle wrapping startup, raised $10K, 5,000+
+  vehicles wrapped.
+- **NED University of Engineering & Technology** — engineering graduate, GPA 3.445.
+
+## Pages
+
+- [Home](https://mubashirsakhi.com/): profile, what he does, track record,
+  community work, and contact details.
+- [Enova case study](https://mubashirsakhi.com/work/enova/): two years building a
+  B2B renewable-energy brand in Karachi — discoverability, storefront, product
+  photography, and operations.
+- [The Desk](https://mubashirsakhi.com/desk/): a pixel diorama of his workspace.
+- [Idea Graveyard](https://mubashirsakhi.com/graveyard/): unfinished and
+  abandoned project ideas, with notes on why each was set down.
+
+## Contact
+
+- Email: mubashirsakhi@gmail.com
+- LinkedIn: https://linkedin.com/in/mubashirsakhi
+- GitHub: https://github.com/mubashirsakhi
+- Medium: https://medium.com/@mubashirsakhi

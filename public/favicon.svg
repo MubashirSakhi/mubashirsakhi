@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- M drawn as a stroke, not text: no font dependency, stays crisp at 16px -->
+  <rect width="32" height="32" rx="7" fill="#0a0a0c"/>
+  <path d="M7 24V9l9 10 9-10v15" fill="none" stroke="#8ccf23" stroke-width="4.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
