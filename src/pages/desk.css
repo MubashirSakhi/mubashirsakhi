@@ -287,9 +287,48 @@ body.desk {
   .dk-ui { padding-top: clamp(64px, 14vw, 88px) }
 }
 
-/* portrait: bias the crop up so the desk stays in frame */
-@media (max-aspect-ratio: 3/4) {
-  .dk-plane video { object-position: 50% 38% }
+/* Portrait: show the whole frame. The scene stops being a full-bleed
+   backdrop and becomes a centered 16:9 band on flat void, with the
+   title above it and the playlist below (.dk-ui is already a
+   space-between column, so it lands around the band on its own). */
+@media (max-aspect-ratio: 1/1) {
+  .dk-bg {
+    display: grid;
+    place-items: center;
+  }
+  .dk-plane {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    /* sources are exactly 1280x720, so cover crops nothing at this ratio.
+       The tilt is mouse-only, but a mouse in a portrait window would still
+       scale(1.05) the band and re-crop it — JS writes it inline, so !important
+       is the only way to win. */
+    transform: none !important;
+  }
+  /* keep the grade on the scene, off the void */
+  .dk-tint,
+  .dk-wash {
+    top: 50%;
+    bottom: auto;
+    height: 56.25vw; /* 100vw × 9/16 — tracks the band exactly */
+    transform: translateY(-50%);
+  }
+  /* the scrim only existed to lift UI off the lamp; nothing overlaps now */
+  .dk-scrim { display: none }
+
+  /* Reserve the band's exact height as a middle row so the header and the
+     playlist can never collide with the scene, however far the chips wrap.
+     space-between only approximates this and fails on ~320px screens. */
+  .dk-ui {
+    display: grid;
+    grid-template-rows: 1fr 56.25vw 1fr;
+    justify-items: center;
+    align-items: center;
+  }
+  .dk-head { grid-row: 1 }
+  .dk-foot { grid-row: 3 }
 }
 
 @media (prefers-reduced-motion: reduce) {
