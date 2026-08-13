@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import coffeeVideo from '../assets/mubashir-coffee-video.mp4'
 import { Reveal, useInView } from '../hooks'
 
@@ -24,6 +25,9 @@ export default function Coffee() {
         </Reveal>
         <Reveal as="h3" className="coffee-line" delay={3}>
           Everyone is in their own journey, <em>enjoy yours</em>.
+        </Reveal>
+        <Reveal delay={4}>
+          <Link to="/desk" className="coffee-cta">Pull up a chair →</Link>
         </Reveal>
       </div>
 

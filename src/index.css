@@ -1201,6 +1201,26 @@ section { position: relative; }
   color: var(--accent-4);
 }
 
+/* same pill as .nav-cta, sized for the interlude */
+.coffee-cta {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 11px 20px;
+  border: 1px solid var(--ink-hair);
+  border-radius: 999px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.coffee-cta:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
 .coffee-foot {
   position: absolute;
   z-index: 8;
