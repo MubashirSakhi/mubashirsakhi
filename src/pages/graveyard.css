@@ -132,41 +132,140 @@ body.graveyard::before {
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
+  /* type scale — media queries move these, paper variants scale off them */
+  --t: 1.6rem;
+  --tg: 12.5px;
 }
 .scrap.dragging { cursor: grabbing; }
 
+/* Real paper on a dark stage: flip the ink tokens locally so every child
+   (tag, bar, pct, stage-name) reads correctly without being touched. */
 .scrap-body {
   position: relative;
   padding: 22px 22px 20px;
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--paper-soft) 92%, var(--accent) 4%), var(--paper-soft));
-  border: 1.5px dashed var(--ink-faint);
+  --ink: #17171c;
+  --ink-dim: rgba(23,23,28,0.68);
+  --ink-faint: rgba(23,23,28,0.44);
+  --ink-hair: rgba(23,23,28,0.16);
+  /* page accents are tuned for a dark bg — sink them for light paper */
+  --accent-deep: color-mix(in oklab, var(--accent) 55%, #0b0b0f);
+  --sheet: #f5f2e9;
+  background: var(--sheet);
   color: var(--ink);
-  box-shadow: 0 24px 50px -24px rgba(0,0,0,0.7);
-  transition: box-shadow 0.4s ease, border-color 0.3s ease;
+  /* drop-shadow, not box-shadow: clip-path folds would crop a box-shadow */
+  filter: drop-shadow(0 16px 18px rgba(0,0,0,0.55));
+  box-shadow: inset 0 0 0 1px rgba(23,23,28,0.10);
+  transition: filter 0.35s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
-.scrap:hover .scrap-body {
-  border-color: color-mix(in oklab, var(--accent) 60%, var(--ink-faint));
-  box-shadow:
-    0 34px 70px -22px rgba(0,0,0,0.75),
-    0 0 0 1px color-mix(in oklab, var(--accent) 30%, transparent);
-}
-
-/* torn / cut-off corner variants via clip-path */
-.scrap.torn-1 .scrap-body { clip-path: polygon(0 0, 100% 0, 100% 84%, 88% 100%, 0 100%); }
-.scrap.torn-2 .scrap-body { clip-path: polygon(0 0, 100% 6%, 100% 100%, 12% 100%, 0 90%); }
-.scrap.torn-3 .scrap-body { clip-path: polygon(0 4%, 92% 0, 100% 100%, 0 96%); }
-.scrap.torn-4 .scrap-body { clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%, 6% 50%); }
-.scrap.torn-5 .scrap-body { clip-path: polygon(0 0, 100% 0, 100% 100%, 16% 96%, 0 72%); }
-
-/* rough dashed second outline (sketchy, offset) */
+/* texture layer */
 .scrap-sketch {
   position: absolute;
-  inset: 5px;
-  border: 1px dashed var(--ink-hair);
+  inset: 0;
   pointer-events: none;
-  opacity: 0.7;
+}
+
+/* ---- INDEX CARD — ruled, red margin rule, pinned ---- */
+.scrap.p-index .scrap-body { --sheet: #f5f2e9; padding-top: 30px; }
+.scrap.p-index .scrap-sketch {
+  background:
+    linear-gradient(90deg, transparent 13%, rgba(192,57,43,0.5) 13% calc(13% + 1px), transparent calc(13% + 1px)),
+    repeating-linear-gradient(180deg, transparent 0 25px, rgba(23,23,28,0.09) 25px 26px);
+}
+.scrap.p-index .scrap-body::after {
+  content: "";
+  position: absolute;
+  top: 7px; left: 50%;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 35% 30%, #ff8272, #b03225 72%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.45);
+}
+
+/* ---- RECEIPT — thermal paper, mono, torn scalloped foot ---- */
+.scrap.p-receipt .scrap-body {
+  --sheet: #fbfaf6;
+  padding-bottom: 30px;
+  -webkit-mask:
+    radial-gradient(8px at 50% 0, #0000 98%, #000) bottom left/16px 8px repeat-x,
+    linear-gradient(#000 0 0) top/100% calc(100% - 8px) no-repeat;
+  mask:
+    radial-gradient(8px at 50% 0, #0000 98%, #000) bottom left/16px 8px repeat-x,
+    linear-gradient(#000 0 0) top/100% calc(100% - 8px) no-repeat;
+}
+.scrap.p-receipt .scrap-title {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: calc(var(--t) * 0.72);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.scrap.p-receipt .scrap-tag { font-family: var(--f-mono); font-size: calc(var(--tg) * 0.9); }
+.scrap.p-receipt .scrap-kicker { border-bottom: 1px dashed var(--ink-faint); padding-bottom: 9px; }
+.scrap.p-receipt .scrap-prog { border-top: 1px dashed var(--ink-faint); padding-top: 12px; }
+
+/* ---- NAPKIN — handwritten, cup ring, taped down ---- */
+.scrap.p-napkin .scrap-body { --sheet: #f8f6f1; box-shadow: inset 0 0 0 1px rgba(23,23,28,0.14); }
+.scrap.p-napkin .scrap-sketch {
+  background: radial-gradient(circle 46px at 80% 76%,
+    transparent 40px, rgba(150,110,60,0.16) 41px 46px, transparent 47px);
+}
+.scrap.p-napkin .scrap-title,
+.scrap.p-napkin .scrap-tag { font-family: var(--f-hand); }
+.scrap.p-napkin .scrap-title { font-weight: 700; font-size: calc(var(--t) * 1.2); line-height: 0.94; }
+.scrap.p-napkin .scrap-tag { font-size: calc(var(--tg) * 1.25); line-height: 1.3; }
+.scrap.p-napkin::before {
+  content: "";
+  position: absolute;
+  top: -9px; left: -18px;
+  width: 62px; height: 25px;
+  transform: rotate(-24deg);
+  z-index: 4;
+  background: linear-gradient(180deg, rgba(196,196,201,0.6), rgba(148,148,157,0.44));
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+}
+
+/* ---- LEDGER PAGE — accounting grid, folded top-left ---- */
+.scrap.p-ledger .scrap-body {
+  --sheet: #f3f5ee;
+  clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%, 0 15px);
+}
+.scrap.p-ledger .scrap-sketch {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(56,104,66,0.15) 22px 23px),
+    repeating-linear-gradient(180deg, transparent 0 22px, rgba(56,104,66,0.15) 22px 23px);
+}
+.scrap.p-ledger .scrap-body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 15px; height: 15px;
+  background: linear-gradient(225deg, rgba(0,0,0,0.24), rgba(0,0,0,0.04));
+}
+
+/* ---- STICKY NOTE — yellow, no rules, folded bottom-right ---- */
+.scrap.p-sticky .scrap-body {
+  --ink: #1c1a10;
+  --ink-dim: rgba(28,26,16,0.72);
+  --ink-faint: rgba(28,26,16,0.5);
+  --ink-hair: rgba(28,26,16,0.2);
+  background: linear-gradient(172deg, #f4eda6, #ebdd85);
+  box-shadow: none;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+}
+.scrap.p-sticky .scrap-body::after {
+  content: "";
+  position: absolute;
+  right: 0; bottom: 0;
+  width: 22px; height: 22px;
+  background: linear-gradient(315deg, rgba(0,0,0,0.26), rgba(0,0,0,0.02));
+}
+/* hover lives below the variants — same specificity, so it must win on order */
+.scrap:hover .scrap-body {
+  filter: drop-shadow(0 24px 28px rgba(0,0,0,0.62));
+  /* inset ring — an outer one gets clipped on the folded papers */
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--accent-deep) 60%, transparent);
 }
 
 .scrap-kicker {
@@ -174,7 +273,7 @@ body.graveyard::before {
   font-size: 9.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-deep);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -185,19 +284,19 @@ body.graveyard::before {
 .scrap-title {
   font-family: var(--f-display);
   font-weight: 800;
-  font-size: 1.6rem;
+  font-size: var(--t);
   letter-spacing: -0.03em;
   line-height: 0.98;
   margin: 12px 0 8px;
 }
 .scrap-tag {
-  font-size: 12.5px;
+  font-size: var(--tg);
   line-height: 1.45;
   color: var(--ink-dim);
   margin: 0;
   /* fade the last line — like the thought trails off */
-  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
-  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
 }
 
 /* progress — stuck at a random % */
@@ -218,7 +317,7 @@ body.graveyard::before {
   position: absolute;
   left: 0; top: 0;
   height: 4px;
-  background: var(--accent);
+  background: var(--accent-deep);
   /* dashed edge = it just stops */
   -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent 100%);
   mask-image: linear-gradient(90deg, #000 82%, transparent 100%);
@@ -248,12 +347,10 @@ body.graveyard::before {
 
 /* revived state — briefly, jokingly alive */
 .scrap.revived .scrap-body {
-  border-style: solid;
-  border-color: var(--c-lime);
-  box-shadow:
-    0 34px 70px -22px rgba(0,0,0,0.7),
-    0 0 34px -4px color-mix(in oklab, var(--c-lime) 55%, transparent),
-    0 0 0 1px color-mix(in oklab, var(--c-lime) 50%, transparent);
+  box-shadow: inset 0 0 0 2px var(--c-lime);
+  filter:
+    drop-shadow(0 16px 18px rgba(0,0,0,0.55))
+    drop-shadow(0 0 14px color-mix(in oklab, var(--c-lime) 65%, transparent));
 }
 .scrap.revived .scrap-tag {
   -webkit-mask-image: none;
@@ -549,10 +646,10 @@ body.graveyard::before {
   .gv-count { margin-top: 14px; }
   .gv-hint { display: none; }
 
-  .scrap { width: 208px; }
+  .scrap { width: 208px; --t: 1.35rem; --tg: 12px; }
   .scrap-body { padding: 17px 17px 15px; }
-  .scrap-title { font-size: 1.35rem; margin: 10px 0 7px; }
-  .scrap-tag { font-size: 12px; }
+  .scrap.p-index .scrap-body { padding-top: 26px; }
+  .scrap-title { margin: 10px 0 7px; }
   .scrap-note { font-size: 1.05rem; }
 
   .gv-modal { padding: 32px 24px; max-height: calc(100dvh - 40px); }
@@ -567,11 +664,12 @@ body.graveyard::before {
   .gv-title { font-size: clamp(1.9rem, 9vw, 2.4rem); }
   .gv-sub { font-size: 0.92rem; max-width: 26ch; }
 
-  .scrap { width: 168px; }
+  .scrap { width: 168px; --t: 1.12rem; --tg: 11px; }
   .scrap-body { padding: 13px 13px 12px; }
+  .scrap.p-index .scrap-body { padding-top: 24px; }
   .scrap-kicker { font-size: 8.5px; letter-spacing: 0.12em; }
-  .scrap-title { font-size: 1.12rem; margin: 8px 0 6px; }
-  .scrap-tag { font-size: 11px; line-height: 1.4; }
+  .scrap-title { margin: 8px 0 6px; }
+  .scrap-tag { line-height: 1.4; }
   .scrap-prog { margin-top: 12px; }
   .scrap-note { font-size: 0.95rem; }
 

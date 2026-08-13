@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom'
 import { useKarachiTime } from '../hooks'
 import './graveyard.css'
 
-const GRAVITY = 0.018
-const DRIFT = 0.05
+/* No gravity — cards hover near their slot instead of piling on the floor.
+   SPRING is the pull back home; throwing still works, it just eases back. */
+const SPRING = 0.0018
+const DRIFT = 0.015
 
 /* ---- the dead ideas (placeholders — edit freely) ---- */
 const IDEAS = [
@@ -25,7 +27,7 @@ const IDEAS = [
     why: 'TODO — why it stalled.',
     reflection: 'TODO — looking back, one honest line.',
     tags: ['startup', 'advertising', 'karachi'],
-    torn: 'torn-1', accent: 'blue',
+    paper: 'ledger', accent: 'blue',
     note: 'raised $10K',
   },
   {
@@ -41,7 +43,7 @@ const IDEAS = [
     why: 'TODO — why it stalled.',
     reflection: 'TODO — looking back, one honest line.',
     tags: ['todo', 'todo'],
-    torn: 'torn-2', accent: 'orange',
+    paper: 'index', accent: 'orange',
     note: 'TODO',
   },
   {
@@ -57,7 +59,7 @@ const IDEAS = [
     why: 'Two designs sold out almost immediately and the rest moved slowly — a solvable problem. The unsolvable one was us. The founders drifted into different lives before we ever placed a second run, and reordering the winners meant another 250-piece bet nobody was around to make.',
     reflection: 'The market told us exactly which ideas were right. We just weren’t together long enough to listen.',
     tags: ['streetwear', 'karachi', 'supply chain'],
-    torn: 'torn-3', accent: 'magenta',
+    paper: 'napkin', accent: 'magenta',
     note: 'the stock outlasted the team',
     link: 'https://instagram.com/getascendence',
   },
@@ -74,7 +76,7 @@ const IDEAS = [
     why: 'TODO — why it stalled.',
     reflection: 'TODO — looking back, one honest line.',
     tags: ['todo', 'todo'],
-    torn: 'torn-4', accent: 'lime',
+    paper: 'sticky', accent: 'lime',
     note: 'TODO',
   },
   {
@@ -90,11 +92,20 @@ const IDEAS = [
     why: 'It was never the main thing. One day we all looked at our corporate jobs and the startup we were actually building, agreed those came first, and stopped posting. Nothing broke. We just left.',
     reflection: 'We buried a rising star. Distribution is the hardest part to build and we already had it — we just didn’t recognise what we were holding.',
     tags: ['content', 'facebook', 'food'],
-    torn: 'torn-5', accent: 'blue',
+    paper: 'receipt', accent: 'blue',
     note: 'buried a rising star',
     link: 'https://www.facebook.com/foodfeedlive/',
   },
 ]
+
+/* what each idea got scribbled on */
+const PAPER_LABEL = {
+  index: 'Index card',
+  receipt: 'Receipt',
+  napkin: 'Napkin sketch',
+  ledger: 'Ledger page',
+  sticky: 'Sticky note',
+}
 
 const ACCENT_CSS = {
   blue: 'oklch(0.72 0.20 252)',
@@ -187,6 +198,7 @@ function Stage({ onOpen, revivedId }) {
         return {
           id: idea.id, el, w, h,
           x, y,
+          hx: x, hy: y,          // home slot the spring pulls back to
           vx: (Math.random() - 0.5) * 0.6,
           vy: (Math.random() - 0.5) * 0.6,
           rot: (Math.random() - 0.5) * 7,
@@ -230,16 +242,18 @@ function Stage({ onOpen, revivedId }) {
       // integrate
       for (const b of bodies) {
         if (dragRef.current && dragRef.current.id === b.id) continue
-        // gravity (gentle) + buoyant bob so nothing fully settles
-        b.vy += GRAVITY
-        b.vy += Math.sin(t * 1.1 + b.phase) * 0.010
-        b.vx += Math.cos(t * 0.9 + b.phase) * 0.008
+        // pull home, so the stage stays spread out
+        b.vx += (b.hx - b.x) * SPRING
+        b.vy += (b.hy - b.y) * SPRING
+        // slow bob so nothing fully settles
+        b.vy += Math.sin(t * 0.5 + b.phase) * 0.006
+        b.vx += Math.cos(t * 0.4 + b.phase) * 0.005
         // ambient drift
         b.vx += (Math.random() - 0.5) * DRIFT
         b.vy += (Math.random() - 0.5) * DRIFT
-        // friction
-        b.vx *= 0.992
-        b.vy *= 0.992
+        // friction — heavy, so motion reads as a slow float
+        b.vx *= 0.97
+        b.vy *= 0.97
         // clamp speed
         const sp = Math.hypot(b.vx, b.vy)
         const max = 14
@@ -399,7 +413,7 @@ function Scrap({ idea, index, revived, setEl }) {
   const notePos = NOTE_POS[index % NOTE_POS.length]
   return (
     <div
-      className={`scrap ${idea.torn} ${revived ? 'revived' : ''}`}
+      className={`scrap p-${idea.paper} ${revived ? 'revived' : ''}`}
       data-id={idea.id}
       ref={(el) => setEl(idea.id, el)}
       style={{ '--accent': ACCENT_CSS[idea.accent] }}
@@ -408,7 +422,7 @@ function Scrap({ idea, index, revived, setEl }) {
       <div className="scrap-body">
         <span className="scrap-sketch" />
         <div className="scrap-kicker">
-          <span>Unfinished</span>
+          <span>{PAPER_LABEL[idea.paper]}</span>
           <span className="stage-name">{idea.stageName}</span>
         </div>
         <h3 className="scrap-title">{idea.title}</h3>
