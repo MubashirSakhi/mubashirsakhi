@@ -187,15 +187,69 @@ section { position: relative; }
   border-color: var(--accent);
 }
 
+/* ============================================================
+   GRAVEYARD TEASER — the footnote to the track record
+   ============================================================ */
+.gy-teaser { padding: clamp(48px, 7vh, 84px) 0; }
+.gy-teaser-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 48px);
+  flex-wrap: wrap;
+  border-top: 1px solid var(--ink-hair);
+  padding-top: clamp(26px, 4vh, 42px);
+}
+.gy-teaser-head {
+  font-family: var(--f-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  margin: 14px 0 0;
+  color: var(--ink);
+}
+.gy-teaser-head em {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--c-magenta);
+}
+.gy-teaser-desc { max-width: 48ch; margin-top: 14px; }
+.gy-teaser-cta {
+  flex: none;
+  display: inline-block;
+  padding: 13px 22px;
+  border: 1px solid var(--ink-hair);
+  border-radius: 999px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.gy-teaser-cta:hover {
+  background: var(--c-magenta);
+  border-color: var(--c-magenta);
+  color: var(--paper);
+}
+
 /* scroll progress bar */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
   height: 3px;
-  width: 0%;
+  /* full-width gradient revealed by clip-path, not grown by width: this updates
+     every scroll frame, and clip-path repaints where width would relayout.
+     scaleX would squash the four stops instead of revealing them. */
+  width: 100%;
   background: linear-gradient(90deg, var(--c-blue), var(--c-magenta), var(--c-orange), var(--c-lime));
   z-index: 100;
-  transition: width 0.08s linear;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.08s linear;
 }
 
 /* ============================================================
@@ -1201,25 +1255,52 @@ section { position: relative; }
   color: var(--accent-4);
 }
 
-/* same pill as .nav-cta, sized for the interlude */
+/* The one button that opens the Desk, so it wears the Desk's shape: the same
+   stepped pixel corners as .dk-px (desk.css), which only loads on that page.
+   Outline is a background + inset ::after, because a plain border would be
+   sliced away by the clip-path at every step. */
 .coffee-cta {
+  --u: 4px;
+  position: relative;
+  isolation: isolate;
   display: inline-block;
   margin-top: 28px;
   padding: 11px 20px;
-  border: 1px solid var(--ink-hair);
-  border-radius: 999px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink-hair);
+  clip-path: polygon(
+    0 calc(var(--u) * 2), var(--u) calc(var(--u) * 2), var(--u) var(--u),
+    calc(var(--u) * 2) var(--u), calc(var(--u) * 2) 0,
+    calc(100% - var(--u) * 2) 0, calc(100% - var(--u) * 2) var(--u),
+    calc(100% - var(--u)) var(--u), calc(100% - var(--u)) calc(var(--u) * 2),
+    100% calc(var(--u) * 2), 100% calc(100% - var(--u) * 2),
+    calc(100% - var(--u)) calc(100% - var(--u) * 2),
+    calc(100% - var(--u)) calc(100% - var(--u)),
+    calc(100% - var(--u) * 2) calc(100% - var(--u)),
+    calc(100% - var(--u) * 2) 100%, calc(var(--u) * 2) 100%,
+    calc(var(--u) * 2) calc(100% - var(--u)), var(--u) calc(100% - var(--u)),
+    var(--u) calc(100% - var(--u) * 2), 0 calc(100% - var(--u) * 2)
+  );
   font-family: var(--f-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
-.coffee-cta:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--paper);
+/* the fill inside the 1.5px rim — also darkens the video for legibility */
+.coffee-cta::after {
+  content: '';
+  position: absolute;
+  inset: 1.5px;
+  z-index: -1;
+  background: rgba(10, 10, 12, 0.42);
+  clip-path: inherit;
+  transition: background 0.2s;
 }
+.coffee-cta:hover { background: var(--accent); color: var(--paper); }
+.coffee-cta:hover::after { background: var(--accent); }
 
 .coffee-foot {
   position: absolute;

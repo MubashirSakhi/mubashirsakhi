@@ -14,37 +14,23 @@ const DRIFT = 0.015
 
 /* ---- the dead ideas (placeholders — edit freely) ---- */
 const IDEAS = [
-  {
-    id: 'wrapkar',
-    title: 'Wrapkar',
-    stageName: 'Raised $10K',
-    pct: 68,
-    started: 'TODO',
-    abandoned: 'TODO',
-    tag: 'Vehicle wrapping as a business — turn any car into a moving billboard, and pay the driver for the mileage.',
-    lead: 'Every car in Karachi is unsold ad space doing nothing all day.',
-    what: 'A vehicle-wrapping startup: brands bought the panels, drivers got paid to carry them, and we handled the wrap, the routes and the reporting in between. Co-founded, raised $10K.',
-    why: 'TODO — why it stalled.',
-    reflection: 'TODO — looking back, one honest line.',
-    tags: ['startup', 'advertising', 'karachi'],
-    paper: 'ledger', accent: 'blue',
-    note: 'raised $10K',
-  },
+  /* Wrapkar lives in TrackRecord on the home page as a win — it doesn't get to
+     be dead here too. The 'ledger' paper is free for whatever fills slot five. */
   {
     id: 'pitchwise',
     title: 'PitchWise',
-    stageName: 'TODO',
-    pct: 40,
-    started: 'TODO',
-    abandoned: 'TODO',
-    tag: 'TODO — one line, what it was, said plainly.',
-    lead: 'TODO — the sentence that made you start it.',
-    what: 'TODO — what it actually was.',
-    why: 'TODO — why it stalled.',
-    reflection: 'TODO — looking back, one honest line.',
-    tags: ['todo', 'todo'],
+    stageName: 'Real users',
+    pct: 70,
+    started: '2023',
+    abandoned: '2023',
+    tag: 'Describe your startup, get a pitch deck back — plus the investors actually funding your market. Founders used it. Then Tome and Gamma showed up.',
+    lead: 'Making the deck is the part every founder dreads and almost nobody is good at.',
+    what: 'A Next.js app that turned a plain description of your startup into a finished pitch deck, then matched it against a scraped pipeline of investors actually writing cheques in that market. Built on the OpenAI API for a buildspace builder program — ship in public, post the updates to LinkedIn, repeat. Real founders used it to make real decks.',
+    why: 'Tome and Gamma arrived doing the same thing with serious funding behind them, and I could see the category closing. Shutting it down was a call, not a drift. The timing wasn’t a coincidence either — the program ended the same month, and I never replaced the cohort that had been keeping me honest.',
+    reflection: 'The right call for the right reason, which is rarer in here than I’d like. What I actually kept was the habit: building in public got me a network I still use, and an NFT I don’t.',
+    tags: ['nextjs', 'openai api', 'build in public'],
     paper: 'index', accent: 'orange',
-    note: 'TODO',
+    note: 'called it early',
   },
   {
     id: 'ascendence',
@@ -131,6 +117,23 @@ const REVIVE_LINES = [
   'One more shot. For old times’ sake.',
 ]
 
+/* Shove a body clear of a rect it must not cover (the header text).
+   Moves along whichever axis needs the least travel. */
+function evict(b, k, kick) {
+  const ox = Math.min(b.x + b.w, k.right) - Math.max(b.x, k.left)
+  const oy = Math.min(b.y + b.h, k.bottom) - Math.max(b.y, k.top)
+  if (ox <= 0 || oy <= 0) return
+  if (ox < oy) {
+    const dir = b.x + b.w / 2 < (k.left + k.right) / 2 ? -1 : 1
+    b.x += dir * ox
+    if (kick) b.vx += dir * 0.5
+  } else {
+    const dir = b.y + b.h / 2 < (k.top + k.bottom) / 2 ? -1 : 1
+    b.y += dir * oy
+    if (kick) b.vy += dir * 0.5
+  }
+}
+
 function GraveyardNav() {
   const time = useKarachiTime()
   return (
@@ -160,6 +163,7 @@ function Stage({ onOpen, revivedId }) {
   const elsRef = useRef({})          // id -> card element
   const dragRef = useRef(null)       // active drag state
   const rafRef = useRef(null)
+  const keepRef = useRef(null)       // header rect the cards must stay off
 
   const setEl = useCallback((id, el) => {
     if (el) elsRef.current[id] = el
@@ -173,8 +177,14 @@ function Stage({ onOpen, revivedId }) {
     const buildBodies = () => {
       const rect = stage.getBoundingClientRect()
       const header = document.querySelector('.gv-header')
-      const hb = header ? header.getBoundingClientRect() : { bottom: 96 }
-      const narrow = rect.width < 640
+      const hb = header
+        ? header.getBoundingClientRect()
+        : { top: 92, bottom: 96, left: 32, right: 472 }
+      // stage is position:fixed inset:0, so viewport coords == stage coords
+      const keep = { left: hb.left - 14, right: hb.right + 14, top: hb.top - 14, bottom: hb.bottom + 14 }
+      keepRef.current = keep
+      // stack below the header unless there's real room beside it
+      const narrow = rect.width - hb.right < 300
 
       bodiesRef.current = IDEAS.map((idea, i) => {
         const el = elsRef.current[idea.id]
@@ -195,6 +205,12 @@ function Stage({ onOpen, revivedId }) {
         let y = top + row * cellH + (cellH - h) / 2 + jitter(narrow ? 20 : 48)
         x = Math.max(10, Math.min(rect.width - w - 10, x))
         y = Math.max(narrow ? top : 96, Math.min(rect.height - h - 10, y))
+        // never let a home slot sit under the header, or the spring fights the
+        // keep-out forever and the card jitters against it
+        const slot = { x, y, w, h }
+        evict(slot, keep, false)
+        x = Math.max(10, Math.min(rect.width - w - 10, slot.x))
+        y = Math.max(70, Math.min(rect.height - h - 10, slot.y))
         return {
           id: idea.id, el, w, h,
           x, y,
@@ -270,6 +286,9 @@ function Stage({ onOpen, revivedId }) {
         if (b.x > r.width - b.w - pad) { b.x = r.width - b.w - pad; b.vx = -Math.abs(b.vx) * 0.7; b.vrot -= 0.05 }
         if (b.y < pad + 70) { b.y = pad + 70; b.vy = Math.abs(b.vy) * 0.7 }
         if (b.y > r.height - b.h - pad) { b.y = r.height - b.h - pad; b.vy = -Math.abs(b.vy) * 0.72; b.vrot += (Math.random() - 0.5) * 0.1 }
+
+        // stay off the header — catches drift, throws and mid-drag releases
+        if (keepRef.current) evict(b, keepRef.current, true)
       }
 
       // soft pairwise repulsion so scraps don't fully stack
