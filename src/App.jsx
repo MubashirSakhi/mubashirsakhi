@@ -15,6 +15,7 @@ import ContactFooter from './components/ContactFooter'
 
 const Graveyard = lazy(() => import('./pages/Graveyard'))
 const CaseStudy = lazy(() => import('./pages/CaseStudy'))
+const Desk = lazy(() => import('./pages/Desk'))
 
 function Home() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/graveyard" element={<Graveyard />} />
+          <Route path="/desk" element={<Desk />} />
           <Route path="/work/:slug" element={<CaseStudy />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
