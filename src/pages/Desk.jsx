@@ -7,13 +7,26 @@ import { Link } from 'react-router-dom'
 import { __tickers, __startTicker } from '../hooks'
 import calmSrc from '../assets/desk-calm.mp4'
 import chaosSrc from '../assets/desk-chaos.mp4'
+import calmPortraitSrc from '../assets/mobile-calm-deskl-asset.mp4'
+import chaosPortraitSrc from '../assets/coffee-mobile.mp4'
 import poster from '../assets/desk-poster.jpg'
 import './desk.css'
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap'
+const PORTRAIT = '(max-aspect-ratio: 1/1)'
 
 export default function Desk() {
   const [night, setNight] = useState(false)
+  // 9:16 renders of the same two scenes — the 16:9 pair letterboxed on phones
+  const [portrait, setPortrait] = useState(() => window.matchMedia(PORTRAIT).matches)
+
+  useEffect(() => {
+    const mq = window.matchMedia(PORTRAIT)
+    const sync = () => setPortrait(mq.matches)
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
   const planeRef = useRef(null)
   const calmRef = useRef(null)
   const chaosRef = useRef(null)
@@ -78,8 +91,8 @@ export default function Desk() {
     <div className={`dk ${night ? 'is-night' : ''}`}>
       <div className="dk-bg">
         <div className="dk-plane" ref={planeRef}>
-          <video ref={calmRef} className="dk-va" src={calmSrc} poster={poster} autoPlay muted loop playsInline preload="auto" />
-          <video ref={chaosRef} className="dk-vb" src={chaosSrc} autoPlay muted loop playsInline preload="auto" />
+          <video ref={calmRef} className="dk-va" src={portrait ? calmPortraitSrc : calmSrc} poster={portrait ? undefined : poster} autoPlay muted loop playsInline preload="auto" />
+          <video ref={chaosRef} className="dk-vb" src={portrait ? chaosPortraitSrc : chaosSrc} autoPlay muted loop playsInline preload="auto" />
         </div>
       </div>
 
