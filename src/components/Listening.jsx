@@ -95,6 +95,12 @@ export default function Listening() {
           ))}
           <button className="fan-arrow" onClick={() => setActive((a) => (a + 1) % PODCASTS.length)} aria-label="Next">→</button>
         </div>
+
+        <div className="fan-summaries">
+          <a className="link" href="https://mubashirsakhi.github.io/business-daily-podcasts/" target="_blank" rel="noopener noreferrer">
+            Read my daily episode summaries <span>↗</span>
+          </a>
+        </div>
       </div>
     </section>
   )

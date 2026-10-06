@@ -576,7 +576,7 @@ section { position: relative; }
   line-height: 1.7;
   margin: 0 0 16px;
 }
-.track-body .link {
+.track-body .link, .fan-summaries .link {
   color: var(--accent);
   font-family: var(--f-mono);
   font-size: 11px;
@@ -589,7 +589,7 @@ section { position: relative; }
   padding-bottom: 2px;
   transition: gap 0.2s;
 }
-.track-body .link:hover { gap: 14px; }
+.track-body .link:hover, .fan-summaries .link:hover { gap: 14px; }
 
 /* ============================================================
    TRACK RECORD
@@ -1354,3 +1354,5 @@ html.js-ready .reveal.in { animation: revealIn 0.9s cubic-bezier(0.2, 1, 0.3, 1)
 body[data-grain="off"]::after  { display: none; }
 body[data-orbs="off"]  .orb   { display: none; }
 body[data-marquee="off"] .marquee { display: none; }
+
+.fan-summaries { text-align: center; margin-top: 28px; }
