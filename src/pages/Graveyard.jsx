@@ -84,6 +84,20 @@ const IDEAS = [
   },
 ]
 
+/* Screenshots. Drop files in src/assets/shots/<idea id>/ and they show up —
+   filename order is display order. No data entry, Vite resolves them at build. */
+const SHOTS = Object.entries(
+  import.meta.glob('../assets/shots/*/*.{png,jpg,jpeg,webp}', {
+    eager: true, query: '?url', import: 'default',
+  })
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .reduce((acc, [path, url]) => {
+    const id = path.split('/').at(-2)
+    ;(acc[id] ||= []).push(url)
+    return acc
+  }, {})
+
 /* what each idea got scribbled on */
 const PAPER_LABEL = {
   index: 'Index card',
@@ -491,6 +505,22 @@ function Modal({ idea, onClose, onRevive }) {
           <span className="track"><i style={{ width: `${idea.pct}%` }} /></span>
           <span className="num">{idea.pct}%<span className="stage">{idea.stageName}</span></span>
         </div>
+
+        {/* ponytail: scroll-snap strip, click opens full size in a tab — no lightbox */}
+        {SHOTS[idea.id] && (
+          <div className="gv-shots">
+            {SHOTS[idea.id].map((src, i) => (
+              <a key={src} href={src} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={src}
+                  alt={`${idea.title} screenshot ${i + 1}`}
+                  loading="lazy"
+                  draggable="false"
+                />
+              </a>
+            ))}
+          </div>
+        )}
 
         <div className="gv-field">
           <div className="gv-field-label">What it was</div>
