@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import Marquee from './components/Marquee'
 import WhatIDo from './components/WhatIDo'
 import TrackRecord from './components/TrackRecord'
+import GraveyardTeaser from './components/GraveyardTeaser'
 import Community from './components/Community'
 import Listening from './components/Listening'
 import Writing from './components/Writing'
@@ -27,6 +28,7 @@ function Home() {
         <Marquee />
         <WhatIDo />
         <TrackRecord />
+        <GraveyardTeaser />
         <Community />
         <Listening />
         <Writing />

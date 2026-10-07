@@ -7,92 +7,105 @@ import { Link } from 'react-router-dom'
 import { useKarachiTime } from '../hooks'
 import './graveyard.css'
 
-const GRAVITY = 0.018
-const DRIFT = 0.05
+/* No gravity — cards hover near their slot instead of piling on the floor.
+   SPRING is the pull back home; throwing still works, it just eases back. */
+const SPRING = 0.0018
+const DRIFT = 0.015
 
 /* ---- the dead ideas (placeholders — edit freely) ---- */
 const IDEAS = [
+  /* Wrapkar lives in TrackRecord on the home page as a win — it doesn't get to
+     be dead here too. The 'ledger' paper is free for whatever fills slot five. */
   {
-    id: 'tidepool',
-    title: 'Tidepool',
+    id: 'pitchwise',
+    title: 'PitchWise',
+    stageName: 'Real users',
+    pct: 70,
+    started: '2023',
+    abandoned: '2023',
+    tag: 'Describe your startup, get a pitch deck back — plus the investors actually funding your market. Founders used it. Then Tome and Gamma showed up.',
+    lead: 'Making the deck is the part every founder dreads and almost nobody is good at.',
+    what: 'A Next.js app that turned a plain description of your startup into a finished pitch deck, then matched it against a scraped pipeline of investors actually writing cheques in that market. Built on the OpenAI API for a buildspace builder program — ship in public, post the updates to LinkedIn, repeat. Real founders used it to make real decks.',
+    why: 'Tome and Gamma arrived doing the same thing with serious funding behind them, and I could see the category closing. Shutting it down was a call, not a drift. The timing wasn’t a coincidence either — the program ended the same month, and I never replaced the cohort that had been keeping me honest.',
+    reflection: 'The right call for the right reason, which is rarer in here than I’d like. What I actually kept was the habit: building in public got me a network I still use, and an NFT I don’t.',
+    tags: ['nextjs', 'openai api', 'build in public'],
+    paper: 'index', accent: 'orange',
+    note: 'called it early',
+  },
+  {
+    id: 'ascendence',
+    title: 'Ascendence',
+    stageName: 'Shipped',
+    pct: 72,
+    started: '2018',
+    abandoned: '2020',
+    tag: 'Streetwear with Karachi on it instead of somebody else’s skyline. Johar Joshanda. Disco Deewane. Sunset at Clifton Beach.',
+    lead: 'Streetwear was going global. Nobody was making it about here.',
+    what: 'A streetwear label built on local culture — six designs: Aala, Sitaro Se Aage, Disco Deewane, Aladdin Going Places, Sunset at Clifton Beach, Johar Joshanda. We built the whole chain from nothing: export-surplus cotton sourced straight from the mill, a digital-printing factory talked down to a 250-piece minimum, our own tags, envelopes, website, and photography we shot ourselves and kept deliberately raw.',
+    why: 'Two designs sold out almost immediately and the rest moved slowly — a solvable problem. The unsolvable one was us. The founders drifted into different lives before we ever placed a second run, and reordering the winners meant another 250-piece bet nobody was around to make.',
+    reflection: 'The market told us exactly which ideas were right. We just weren’t together long enough to listen.',
+    tags: ['streetwear', 'karachi', 'supply chain'],
+    paper: 'napkin', accent: 'magenta',
+    note: 'the stock outlasted the team',
+    link: 'https://instagram.com/getascendence',
+  },
+  {
+    id: 'playerpairs',
+    title: 'PlayerPairs',
     stageName: 'Prototype',
-    pct: 42,
-    started: 'Mar 2023',
-    abandoned: 'Aug 2023',
-    tag: 'A notes app that filed your thoughts by mood, not by folder. Write when the tide was high, read it back when it was low.',
-    lead: 'What if your notebook knew how you felt when you wrote in it?',
-    what: 'A journaling app that tagged every entry with the emotional “tide” you were in — then resurfaced old notes when you returned to the same feeling. No folders. Just weather.',
-    why: 'The tagging was the whole magic, and it needed to be invisible. Every version I built made you stop and label your own mood, which killed the feeling instantly. I never solved the quiet part.',
-    reflection: 'I still think the idea is right. I just wasn’t patient enough to make it disappear.',
-    tags: ['ios', 'journaling', 'on-device ml'],
-    torn: 'torn-1', accent: 'blue',
-    note: 'revisit the tagging?',
+    pct: 25,
+    started: '2025',
+    abandoned: '2025',
+    tag: 'Tinder for padel partners, built entirely by prompting Replit. I play — I mostly wanted to know how far the tool could carry someone who doesn’t code.',
+    lead: 'I couldn’t find a fourth for a Sunday game. That was the excuse — the real question was whether Replit could build the fix without me writing any of it.',
+    what: 'A padel matching app, prompt by prompt. Players build a profile — photos, video of their game, skill level, preferred time and side — then swipe through other players, filter by type, and see who’s nearby on a map. I never wrote a line of it by hand. A few weeks of evenings and about $100 in credits got profiles, swiping and filters running in Replit’s preview. It never left the editor. Everyone who saw it saw it over my shoulder.',
+    why: 'Nothing dramatic. Streamguys, the energy work, everything with a deadline attached — all of it outranked PlayerPairs every week until the weeks ran out. The tool wasn’t the problem. My calendar was.',
+    reflection: 'I tell founders they can validate an idea without hiring a developer, and I still do — with one correction. It gets you to a demo, not a product. That’s enough to kill a bad idea in a weekend, and nowhere near enough to hand to a stranger.',
+    tags: ['replit', 'vibe coding', 'padel'],
+    paper: 'sticky', accent: 'lime',
+    note: '$100 to learn one thing',
   },
   {
-    id: 'slowmail',
-    title: 'Slowmail',
-    stageName: 'Working prototype',
-    pct: 61,
-    started: 'Jan 2024',
-    abandoned: 'May 2024',
-    tag: 'Email that arrived once a day, at dusk. One delivery. No pings. You read it like a newspaper and then you were done.',
-    lead: 'The inbox, but it only breathed once a day.',
-    what: 'A mail client that batched everything and delivered a single quiet digest at sunset, local time. No notifications, no unread count, no infinite scroll. You opened it, you finished it, you closed it.',
-    why: 'It worked beautifully — for me. But it turned out almost nobody wants less email badly enough to change clients for it. I built a thing for an audience of one.',
-    reflection: 'The happiest four months of building I’ve had. Sometimes the market of one is enough to learn from.',
-    tags: ['email', 'calm tech', 'web'],
-    torn: 'torn-2', accent: 'orange',
-    note: 'audience of one',
-  },
-  {
-    id: 'afterdark',
-    title: 'Karachi After Dark',
-    stageName: 'Sketch',
-    pct: 18,
-    started: 'Sep 2022',
-    abandoned: 'Nov 2022',
-    tag: 'A living map of the city after midnight — the chai spots, the presses still running, where the night actually happens.',
-    lead: 'The city I love is a different city at 2am. Nobody had mapped that one.',
-    what: 'A community map of Karachi’s nightlife — not clubs, but the real after-hours: 24-hour dhabas, the fish harbour at dawn, the streets that only come alive once everyone else is asleep.',
-    why: 'This one needed people, not code. It needed a hundred night-owls contributing, and I tried to solve that with a slicker interface. You can’t design your way to a community that isn’t there yet.',
-    reflection: 'Wrong first move, not wrong idea. Should’ve started with a WhatsApp group and a spreadsheet.',
-    tags: ['maps', 'community', 'karachi'],
-    torn: 'torn-3', accent: 'magenta',
-    note: 'start with people',
-  },
-  {
-    id: 'warehouse',
-    title: 'The Warehouse Sessions',
-    stageName: 'Idea',
-    pct: 12,
-    started: 'Jun 2023',
-    abandoned: 'Jul 2023',
-    tag: 'Intimate live sets in a real working warehouse. Fifty people, one band, concrete and reverb.',
-    lead: 'A gig series in the kind of room a gig was never supposed to happen in.',
-    what: 'A recurring live-music night staged in an actual industrial warehouse — stripped back, fifty tickets, no stage, the crowd close enough to see the setlist. Half concert, half secret.',
-    why: 'The warehouse got sold three weeks in. The whole thing was married to one specific room, and when the room disappeared so did the idea. I never found another that felt right.',
-    reflection: 'Some ideas are really just a place. Lose the place, lose the idea. I’m still looking for the room.',
-    tags: ['live events', 'music', 'irl'],
-    torn: 'torn-4', accent: 'lime',
-    note: 'still looking for the room',
-  },
-  {
-    id: 'ledger',
-    title: 'Ledger for Two',
-    stageName: 'Prototype',
-    pct: 54,
-    started: 'Feb 2024',
-    abandoned: 'Sep 2024',
-    tag: 'Shared money for couples, kept quietly. No lectures, no charts shaming you — just a calm, honest picture of us.',
-    lead: 'Every couples-finance app felt like a spreadsheet with opinions. Ours would just listen.',
-    what: 'A joint-finance app built around trust instead of budgeting. It tracked the shared picture gently, flagged nothing, judged nothing, and made the money conversation easier by making it smaller.',
-    why: 'Money plus relationships plus regulation is three hard problems wearing a trench coat. Every feature opened two more, and “calm” kept losing to “compliant.” The scope quietly ate me.',
-    reflection: 'The restraint was the product, and restraint is the first thing to die under scope creep.',
-    tags: ['fintech', 'relationships', 'mobile'],
-    torn: 'torn-5', accent: 'blue',
-    note: 'restraint died first',
+    id: 'foodfeed',
+    title: 'FoodFeed',
+    stageName: 'Launched',
+    pct: 85,
+    started: '2016',
+    abandoned: '2017',
+    tag: 'A food page — reviews and videos — built to push traffic at our other startups. Two videos went viral. We shut it anyway.',
+    lead: 'We built an audience by accident, then walked away from it on purpose.',
+    what: 'A Facebook page for food reviews and short videos, started in 2016 as a distribution engine for the other startups we were running. Two of the videos went viral — a couple of million views each — and it pulled 18K followers without a rupee of ad spend.',
+    why: 'It was never the main thing. One day we all looked at our corporate jobs and the startup we were actually building, agreed those came first, and stopped posting. Nothing broke. We just left.',
+    reflection: 'We buried a rising star. Distribution is the hardest part to build and we already had it — we just didn’t recognise what we were holding.',
+    tags: ['content', 'facebook', 'food'],
+    paper: 'receipt', accent: 'blue',
+    note: 'buried a rising star',
+    link: 'https://www.facebook.com/foodfeedlive/',
   },
 ]
+
+/* Screenshots. Drop files in src/assets/shots/<idea id>/ and they show up —
+   filename order is display order. No data entry, Vite resolves them at build. */
+const SHOTS = Object.entries(
+  import.meta.glob('../assets/shots/*/*.{png,jpg,jpeg,webp}', {
+    eager: true, query: '?url', import: 'default',
+  })
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .reduce((acc, [path, url]) => {
+    const id = path.split('/').at(-2)
+    ;(acc[id] ||= []).push(url)
+    return acc
+  }, {})
+
+/* what each idea got scribbled on */
+const PAPER_LABEL = {
+  index: 'Index card',
+  receipt: 'Receipt',
+  napkin: 'Napkin sketch',
+  ledger: 'Ledger page',
+  sticky: 'Sticky note',
+}
 
 const ACCENT_CSS = {
   blue: 'oklch(0.72 0.20 252)',
@@ -117,6 +130,23 @@ const REVIVE_LINES = [
   'Alive for exactly as long as this message.',
   'One more shot. For old times’ sake.',
 ]
+
+/* Shove a body clear of a rect it must not cover (the header text).
+   Moves along whichever axis needs the least travel. */
+function evict(b, k, kick) {
+  const ox = Math.min(b.x + b.w, k.right) - Math.max(b.x, k.left)
+  const oy = Math.min(b.y + b.h, k.bottom) - Math.max(b.y, k.top)
+  if (ox <= 0 || oy <= 0) return
+  if (ox < oy) {
+    const dir = b.x + b.w / 2 < (k.left + k.right) / 2 ? -1 : 1
+    b.x += dir * ox
+    if (kick) b.vx += dir * 0.5
+  } else {
+    const dir = b.y + b.h / 2 < (k.top + k.bottom) / 2 ? -1 : 1
+    b.y += dir * oy
+    if (kick) b.vy += dir * 0.5
+  }
+}
 
 function GraveyardNav() {
   const time = useKarachiTime()
@@ -147,6 +177,7 @@ function Stage({ onOpen, revivedId }) {
   const elsRef = useRef({})          // id -> card element
   const dragRef = useRef(null)       // active drag state
   const rafRef = useRef(null)
+  const keepRef = useRef(null)       // header rect the cards must stay off
 
   const setEl = useCallback((id, el) => {
     if (el) elsRef.current[id] = el
@@ -160,8 +191,14 @@ function Stage({ onOpen, revivedId }) {
     const buildBodies = () => {
       const rect = stage.getBoundingClientRect()
       const header = document.querySelector('.gv-header')
-      const hb = header ? header.getBoundingClientRect() : { bottom: 96 }
-      const narrow = rect.width < 640
+      const hb = header
+        ? header.getBoundingClientRect()
+        : { top: 92, bottom: 96, left: 32, right: 472 }
+      // stage is position:fixed inset:0, so viewport coords == stage coords
+      const keep = { left: hb.left - 14, right: hb.right + 14, top: hb.top - 14, bottom: hb.bottom + 14 }
+      keepRef.current = keep
+      // stack below the header unless there's real room beside it
+      const narrow = rect.width - hb.right < 300
 
       bodiesRef.current = IDEAS.map((idea, i) => {
         const el = elsRef.current[idea.id]
@@ -182,9 +219,16 @@ function Stage({ onOpen, revivedId }) {
         let y = top + row * cellH + (cellH - h) / 2 + jitter(narrow ? 20 : 48)
         x = Math.max(10, Math.min(rect.width - w - 10, x))
         y = Math.max(narrow ? top : 96, Math.min(rect.height - h - 10, y))
+        // never let a home slot sit under the header, or the spring fights the
+        // keep-out forever and the card jitters against it
+        const slot = { x, y, w, h }
+        evict(slot, keep, false)
+        x = Math.max(10, Math.min(rect.width - w - 10, slot.x))
+        y = Math.max(70, Math.min(rect.height - h - 10, slot.y))
         return {
           id: idea.id, el, w, h,
           x, y,
+          hx: x, hy: y,          // home slot the spring pulls back to
           vx: (Math.random() - 0.5) * 0.6,
           vy: (Math.random() - 0.5) * 0.6,
           rot: (Math.random() - 0.5) * 7,
@@ -228,16 +272,18 @@ function Stage({ onOpen, revivedId }) {
       // integrate
       for (const b of bodies) {
         if (dragRef.current && dragRef.current.id === b.id) continue
-        // gravity (gentle) + buoyant bob so nothing fully settles
-        b.vy += GRAVITY
-        b.vy += Math.sin(t * 1.1 + b.phase) * 0.010
-        b.vx += Math.cos(t * 0.9 + b.phase) * 0.008
+        // pull home, so the stage stays spread out
+        b.vx += (b.hx - b.x) * SPRING
+        b.vy += (b.hy - b.y) * SPRING
+        // slow bob so nothing fully settles
+        b.vy += Math.sin(t * 0.5 + b.phase) * 0.006
+        b.vx += Math.cos(t * 0.4 + b.phase) * 0.005
         // ambient drift
         b.vx += (Math.random() - 0.5) * DRIFT
         b.vy += (Math.random() - 0.5) * DRIFT
-        // friction
-        b.vx *= 0.992
-        b.vy *= 0.992
+        // friction — heavy, so motion reads as a slow float
+        b.vx *= 0.97
+        b.vy *= 0.97
         // clamp speed
         const sp = Math.hypot(b.vx, b.vy)
         const max = 14
@@ -254,6 +300,9 @@ function Stage({ onOpen, revivedId }) {
         if (b.x > r.width - b.w - pad) { b.x = r.width - b.w - pad; b.vx = -Math.abs(b.vx) * 0.7; b.vrot -= 0.05 }
         if (b.y < pad + 70) { b.y = pad + 70; b.vy = Math.abs(b.vy) * 0.7 }
         if (b.y > r.height - b.h - pad) { b.y = r.height - b.h - pad; b.vy = -Math.abs(b.vy) * 0.72; b.vrot += (Math.random() - 0.5) * 0.1 }
+
+        // stay off the header — catches drift, throws and mid-drag releases
+        if (keepRef.current) evict(b, keepRef.current, true)
       }
 
       // soft pairwise repulsion so scraps don't fully stack
@@ -397,7 +446,7 @@ function Scrap({ idea, index, revived, setEl }) {
   const notePos = NOTE_POS[index % NOTE_POS.length]
   return (
     <div
-      className={`scrap ${idea.torn} ${revived ? 'revived' : ''}`}
+      className={`scrap p-${idea.paper} ${revived ? 'revived' : ''}`}
       data-id={idea.id}
       ref={(el) => setEl(idea.id, el)}
       style={{ '--accent': ACCENT_CSS[idea.accent] }}
@@ -406,7 +455,7 @@ function Scrap({ idea, index, revived, setEl }) {
       <div className="scrap-body">
         <span className="scrap-sketch" />
         <div className="scrap-kicker">
-          <span>Unfinished</span>
+          <span>{PAPER_LABEL[idea.paper]}</span>
           <span className="stage-name">{idea.stageName}</span>
         </div>
         <h3 className="scrap-title">{idea.title}</h3>
@@ -457,6 +506,22 @@ function Modal({ idea, onClose, onRevive }) {
           <span className="num">{idea.pct}%<span className="stage">{idea.stageName}</span></span>
         </div>
 
+        {/* ponytail: scroll-snap strip, click opens full size in a tab — no lightbox */}
+        {SHOTS[idea.id] && (
+          <div className="gv-shots">
+            {SHOTS[idea.id].map((src, i) => (
+              <a key={src} href={src} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={src}
+                  alt={`${idea.title} screenshot ${i + 1}`}
+                  loading="lazy"
+                  draggable="false"
+                />
+              </a>
+            ))}
+          </div>
+        )}
+
         <div className="gv-field">
           <div className="gv-field-label">What it was</div>
           <p>{idea.what}</p>
@@ -482,6 +547,11 @@ function Modal({ idea, onClose, onRevive }) {
             Revive it
           </button>
           <span className="gv-revive-note">Won’t hurt to dream for a second.</span>
+          {idea.link && (
+            <a className="gv-modal-link" href={idea.link} target="_blank" rel="noopener noreferrer">
+              Still up ↗
+            </a>
+          )}
         </div>
       </div>
     </div>

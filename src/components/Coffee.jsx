@@ -20,13 +20,9 @@ export default function Coffee() {
         <Reveal as="h2" className="coffee-headline" delay={1}>
           Take your<br /><em>time.</em>
         </Reveal>
-        <Reveal as="p" className="coffee-sub" delay={2}>
-          Sometimes, take your time off — and enjoy your coffee out there too<span className="coffee-dot">.</span>
-        </Reveal>
-        <Reveal as="h3" className="coffee-line" delay={3}>
-          Everyone is in their own journey, <em>enjoy yours</em>.
-        </Reveal>
-        <Reveal delay={4}>
+        {/* No sub, no strapline: the footage and the grade carry it. The CTA is
+            deliberately the only other thing in here. */}
+        <Reveal delay={2}>
           <Link to="/desk" className="coffee-cta">Pull up a chair →</Link>
         </Reveal>
       </div>
